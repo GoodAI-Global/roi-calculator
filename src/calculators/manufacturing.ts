@@ -1,4 +1,5 @@
-import { ManufacturingInputs, ROIResult, SensitivityAnalysis } from './types';
+import { ManufacturingInputs, ROIResult } from './types';
+import { calculateSensitivityAnalysis } from '../utils/sensitivity';
 
 /**
  * Manufacturing ROI Calculator
@@ -27,25 +28,45 @@ export function calculateManufacturingROI(inputs: ManufacturingInputs): ROIResul
   const monthlyRecurringSavings = monthlyDowntimeSavings - validatedInputs.monthlyMaintenanceCost;
 
   // Payback calculation (months to recover implementation cost)
-  const paybackMonths = monthlyRecurringSavings > 0
-    ? validatedInputs.implementationCost / monthlyRecurringSavings
-    : Infinity;
+  // Prevent division by zero
+  const paybackMonths =
+    monthlyRecurringSavings > 0 && validatedInputs.implementationCost > 0
+      ? validatedInputs.implementationCost / monthlyRecurringSavings
+      : monthlyRecurringSavings <= 0
+        ? Infinity
+        : 0;
 
   // First year calculation
   // Assuming savings start after implementation timeline
   const savingsMonthsYear1 = Math.max(0, 12 - validatedInputs.timelineMonths);
   const firstYearSavings = monthlyRecurringSavings * savingsMonthsYear1;
-  const firstYearROI = ((firstYearSavings - validatedInputs.implementationCost) / validatedInputs.implementationCost) * 100;
+
+  // Prevent division by zero for ROI
+  const firstYearROI =
+    validatedInputs.implementationCost > 0
+      ? ((firstYearSavings - validatedInputs.implementationCost) /
+          validatedInputs.implementationCost) *
+        100
+      : 0;
 
   // Three year calculation
   // Year 1: partial savings (after implementation)
   // Years 2 & 3: full 12 months savings
-  const threeYearSavings = firstYearSavings + (monthlyRecurringSavings * 24);
+  const threeYearSavings = firstYearSavings + monthlyRecurringSavings * 24;
   const threeYearNetValue = threeYearSavings - validatedInputs.implementationCost;
-  const threeYearROI = (threeYearNetValue / validatedInputs.implementationCost) * 100;
+
+  // Prevent division by zero for ROI
+  const threeYearROI =
+    validatedInputs.implementationCost > 0
+      ? (threeYearNetValue / validatedInputs.implementationCost) * 100
+      : 0;
 
   // Sensitivity analysis with different scenarios
-  const sensitivityAnalysis = calculateSensitivity(validatedInputs, monthlyRecurringSavings);
+  const sensitivityAnalysis = calculateSensitivityAnalysis(
+    validatedInputs.implementationCost,
+    monthlyRecurringSavings,
+    validatedInputs.timelineMonths
+  );
 
   return {
     paybackMonths: Math.round(paybackMonths * 10) / 10,
@@ -69,45 +90,6 @@ function validateInputs(inputs: ManufacturingInputs): ManufacturingInputs {
     implementationCost: Math.max(0, inputs.implementationCost),
     monthlyMaintenanceCost: Math.max(0, inputs.monthlyMaintenanceCost),
     timelineMonths: Math.max(1, inputs.timelineMonths),
-  };
-}
-
-function calculateSensitivity(
-  inputs: ManufacturingInputs,
-  expectedMonthlySavings: number
-): SensitivityAnalysis {
-  // Conservative: 60% of expected benefits
-  const conservativeFactor = 0.6;
-  // Optimistic: 140% of expected benefits
-  const optimisticFactor = 1.4;
-
-  const conservativeSavings = expectedMonthlySavings * conservativeFactor;
-  const optimisticSavings = expectedMonthlySavings * optimisticFactor;
-
-  const savingsMonthsYear1 = Math.max(0, 12 - inputs.timelineMonths);
-
-  // Calculate scenarios
-  const calculateScenario = (monthlySavings: number) => {
-    const paybackMonths = monthlySavings > 0
-      ? inputs.implementationCost / monthlySavings
-      : Infinity;
-
-    const firstYearSavings = monthlySavings * savingsMonthsYear1;
-    const threeYearSavings = firstYearSavings + (monthlySavings * 24);
-    const threeYearNetValue = threeYearSavings - inputs.implementationCost;
-    const threeYearROI = (threeYearNetValue / inputs.implementationCost) * 100;
-
-    return {
-      paybackMonths: Math.round(paybackMonths * 10) / 10,
-      threeYearROI: Math.round(threeYearROI * 10) / 10,
-      threeYearNetValue: Math.round(threeYearNetValue),
-    };
-  };
-
-  return {
-    conservative: calculateScenario(conservativeSavings),
-    expected: calculateScenario(expectedMonthlySavings),
-    optimistic: calculateScenario(optimisticSavings),
   };
 }
 

@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import Calculator from './components/Calculator'
+import ErrorBoundary from './components/ErrorBoundary'
 import { Industry } from './calculators/types'
 
 function App() {
   const [selectedIndustry, setSelectedIndustry] = useState<Industry>('manufacturing')
 
   return (
+    <ErrorBoundary>
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-goodai-black text-white py-6">
@@ -51,6 +53,7 @@ function App() {
         </div>
       </footer>
     </div>
+    </ErrorBoundary>
   )
 }
 

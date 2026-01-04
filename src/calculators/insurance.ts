@@ -1,4 +1,5 @@
-import { InsuranceInputs, ROIResult, SensitivityAnalysis } from './types';
+import { InsuranceInputs, ROIResult } from './types';
+import { calculateSensitivityAnalysis } from '../utils/sensitivity';
 
 /**
  * Insurance ROI Calculator
@@ -37,23 +38,42 @@ export function calculateInsuranceROI(inputs: InsuranceInputs): ROIResult {
   const totalMonthlySavings = monthlyProcessingSavings + monthlyFraudSavings;
   const monthlyRecurringSavings = totalMonthlySavings - validatedInputs.monthlyMaintenanceCost;
 
-  // Payback calculation
-  const paybackMonths = monthlyRecurringSavings > 0
-    ? validatedInputs.implementationCost / monthlyRecurringSavings
-    : Infinity;
+  // Payback calculation - prevent division by zero
+  const paybackMonths =
+    monthlyRecurringSavings > 0 && validatedInputs.implementationCost > 0
+      ? validatedInputs.implementationCost / monthlyRecurringSavings
+      : monthlyRecurringSavings <= 0
+        ? Infinity
+        : 0;
 
   // First year calculation
   const savingsMonthsYear1 = Math.max(0, 12 - validatedInputs.timelineMonths);
   const firstYearSavings = monthlyRecurringSavings * savingsMonthsYear1;
-  const firstYearROI = ((firstYearSavings - validatedInputs.implementationCost) / validatedInputs.implementationCost) * 100;
+
+  // Prevent division by zero for ROI
+  const firstYearROI =
+    validatedInputs.implementationCost > 0
+      ? ((firstYearSavings - validatedInputs.implementationCost) /
+          validatedInputs.implementationCost) *
+        100
+      : 0;
 
   // Three year calculation
-  const threeYearSavings = firstYearSavings + (monthlyRecurringSavings * 24);
+  const threeYearSavings = firstYearSavings + monthlyRecurringSavings * 24;
   const threeYearNetValue = threeYearSavings - validatedInputs.implementationCost;
-  const threeYearROI = (threeYearNetValue / validatedInputs.implementationCost) * 100;
+
+  // Prevent division by zero for ROI
+  const threeYearROI =
+    validatedInputs.implementationCost > 0
+      ? (threeYearNetValue / validatedInputs.implementationCost) * 100
+      : 0;
 
   // Sensitivity analysis
-  const sensitivityAnalysis = calculateSensitivity(validatedInputs, monthlyRecurringSavings);
+  const sensitivityAnalysis = calculateSensitivityAnalysis(
+    validatedInputs.implementationCost,
+    monthlyRecurringSavings,
+    validatedInputs.timelineMonths
+  );
 
   return {
     paybackMonths: Math.round(paybackMonths * 10) / 10,
@@ -78,42 +98,6 @@ function validateInputs(inputs: InsuranceInputs): InsuranceInputs {
     implementationCost: Math.max(0, inputs.implementationCost),
     monthlyMaintenanceCost: Math.max(0, inputs.monthlyMaintenanceCost),
     timelineMonths: Math.max(1, inputs.timelineMonths),
-  };
-}
-
-function calculateSensitivity(
-  inputs: InsuranceInputs,
-  expectedMonthlySavings: number
-): SensitivityAnalysis {
-  const conservativeFactor = 0.6;
-  const optimisticFactor = 1.4;
-
-  const conservativeSavings = expectedMonthlySavings * conservativeFactor;
-  const optimisticSavings = expectedMonthlySavings * optimisticFactor;
-
-  const savingsMonthsYear1 = Math.max(0, 12 - inputs.timelineMonths);
-
-  const calculateScenario = (monthlySavings: number) => {
-    const paybackMonths = monthlySavings > 0
-      ? inputs.implementationCost / monthlySavings
-      : Infinity;
-
-    const firstYearSavings = monthlySavings * savingsMonthsYear1;
-    const threeYearSavings = firstYearSavings + (monthlySavings * 24);
-    const threeYearNetValue = threeYearSavings - inputs.implementationCost;
-    const threeYearROI = (threeYearNetValue / inputs.implementationCost) * 100;
-
-    return {
-      paybackMonths: Math.round(paybackMonths * 10) / 10,
-      threeYearROI: Math.round(threeYearROI * 10) / 10,
-      threeYearNetValue: Math.round(threeYearNetValue),
-    };
-  };
-
-  return {
-    conservative: calculateScenario(conservativeSavings),
-    expected: calculateScenario(expectedMonthlySavings),
-    optimistic: calculateScenario(optimisticSavings),
   };
 }
 
