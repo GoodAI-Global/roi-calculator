@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, lazy, Suspense } from 'react';
 import {
   Industry,
   ManufacturingInputs,
@@ -14,7 +14,18 @@ import IndustrySelector from './IndustrySelector';
 import MetricsInput from './MetricsInput';
 import Results from './Results';
 import Assumptions from './Assumptions';
-import SensitivityChart from './SensitivityChart';
+
+// Lazy load the chart component (uses recharts - largest dependency)
+const SensitivityChart = lazy(() => import('./SensitivityChart'));
+
+function ChartLoading() {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 animate-pulse">
+      <div className="h-8 bg-gray-200 rounded w-48 mb-4"></div>
+      <div className="h-64 bg-gray-100 rounded"></div>
+    </div>
+  );
+}
 
 interface CalculatorProps {
   selectedIndustry: Industry;
@@ -92,15 +103,24 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
           />
 
           {/* Action Buttons */}
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 flex gap-3" role="group" aria-label="Calculator actions">
             <button
               onClick={handleReset}
+              aria-label="Reset all inputs to default values"
               className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
               Reset to Defaults
             </button>
             <button
               onClick={handleCopyJSON}
+              aria-label={
+                copyStatus === 'copied'
+                  ? 'Calculation results copied to clipboard'
+                  : copyStatus === 'error'
+                    ? 'Failed to copy results'
+                    : 'Copy calculation results as JSON to clipboard'
+              }
+              aria-live="polite"
               className={`
                 px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2
                 ${copyStatus === 'copied'
@@ -146,7 +166,9 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
 
       {/* Full Width - Sensitivity Analysis */}
       <div className="mt-6">
-        <SensitivityChart sensitivity={result.sensitivityAnalysis} />
+        <Suspense fallback={<ChartLoading />}>
+          <SensitivityChart sensitivity={result.sensitivityAnalysis} />
+        </Suspense>
       </div>
     </div>
   );

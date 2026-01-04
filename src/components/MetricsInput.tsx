@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { ManufacturingInputs, InsuranceInputs, Industry } from '../calculators/types';
 import { formatCurrency } from '../utils/calculations';
 
@@ -22,38 +23,64 @@ function SliderInput({
   formatValue = (v) => v.toString(),
   helpText,
 }: SliderInputProps) {
+  const id = useId();
+  const numberId = `${id}-number`;
+  const sliderId = `${id}-slider`;
+  const helpId = helpText ? `${id}-help` : undefined;
+
   return (
-    <div className="mb-4">
+    <div className="mb-4" role="group" aria-labelledby={`${id}-label`}>
       <div className="flex justify-between items-center mb-1">
-        <label className="text-sm font-medium text-gray-700">{label}</label>
+        <label
+          id={`${id}-label`}
+          htmlFor={numberId}
+          className="text-sm font-medium text-gray-700"
+        >
+          {label}
+        </label>
         <div className="flex items-center gap-2">
           <input
+            id={numberId}
             type="number"
             value={value}
             onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
             min={min}
             max={max}
             step={step}
+            aria-describedby={helpId}
+            aria-valuemin={min}
+            aria-valuemax={max}
+            aria-valuenow={value}
             className="w-24 px-2 py-1 text-right text-sm border border-gray-300 rounded focus:ring-2 focus:ring-goodai-teal focus:border-transparent"
           />
-          <span className="text-sm text-gray-500 w-16">{formatValue(value)}</span>
+          <span className="text-sm text-gray-500 w-16" aria-hidden="true">
+            {formatValue(value)}
+          </span>
         </div>
       </div>
       <input
+        id={sliderId}
         type="range"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
         min={min}
         max={max}
         step={step}
+        aria-label={label}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={value}
+        aria-valuetext={formatValue(value)}
         className="w-full"
       />
-      <div className="flex justify-between text-xs text-gray-400">
+      <div className="flex justify-between text-xs text-gray-400" aria-hidden="true">
         <span>{formatValue(min)}</span>
         <span>{formatValue(max)}</span>
       </div>
       {helpText && (
-        <p className="mt-1 text-xs text-gray-500">{helpText}</p>
+        <p id={helpId} className="mt-1 text-xs text-gray-500">
+          {helpText}
+        </p>
       )}
     </div>
   );

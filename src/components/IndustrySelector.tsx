@@ -15,14 +15,21 @@ export default function IndustrySelector({ selectedIndustry, onSelect }: Industr
   ];
 
   return (
-    <div className="mb-6">
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+    <nav className="mb-6" aria-label="Industry selection">
+      <p id="industry-label" className="block text-sm font-medium text-gray-700 mb-2">
         Select Industry
-      </label>
-      <div className="flex flex-wrap gap-2">
+      </p>
+      <div
+        className="flex flex-wrap gap-2"
+        role="tablist"
+        aria-labelledby="industry-label"
+      >
         {industries.map((industry) => (
           <button
             key={industry.id}
+            role="tab"
+            aria-selected={selectedIndustry === industry.id}
+            aria-disabled={!industry.enabled}
             onClick={() => industry.enabled && onSelect(industry.id)}
             disabled={!industry.enabled}
             className={`
@@ -37,16 +44,18 @@ export default function IndustrySelector({ selectedIndustry, onSelect }: Industr
           >
             {industry.name}
             {!industry.enabled && (
-              <span className="ml-1 text-xs">(coming soon)</span>
+              <span className="ml-1 text-xs" aria-label="coming soon">
+                (coming soon)
+              </span>
             )}
           </button>
         ))}
       </div>
       {industryBenchmarks[selectedIndustry] && (
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-500" aria-live="polite">
           {industryBenchmarks[selectedIndustry].description}
         </p>
       )}
-    </div>
+    </nav>
   );
 }
