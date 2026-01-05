@@ -17,6 +17,7 @@ import Results from './Results';
 import Assumptions from './Assumptions';
 import ScenarioComparison from './ScenarioComparison';
 import BenchmarkSources from './BenchmarkSources';
+import CalculationAuditTrail from './CalculationAuditTrail';
 
 // Lazy load the chart component (uses recharts - largest dependency)
 const SensitivityChart = lazy(() => import('./SensitivityChart'));
@@ -262,6 +263,13 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
 
       {/* Benchmark Sources */}
       <BenchmarkSources industry={selectedIndustry} />
+
+      {/* Calculation Audit Trail */}
+      <CalculationAuditTrail
+        industry={selectedIndustry}
+        inputs={selectedIndustry === 'manufacturing' ? manufacturingInputs : insuranceInputs}
+        result={result}
+      />
     </div>
   );
 }
