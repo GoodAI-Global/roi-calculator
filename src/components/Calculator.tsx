@@ -16,6 +16,7 @@ import MetricsInput from './MetricsInput';
 import Results from './Results';
 import Assumptions from './Assumptions';
 import ScenarioComparison from './ScenarioComparison';
+import BenchmarkSources from './BenchmarkSources';
 
 // Lazy load the chart component (uses recharts - largest dependency)
 const SensitivityChart = lazy(() => import('./SensitivityChart'));
@@ -258,6 +259,9 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
         currentInputs={selectedIndustry === 'manufacturing' ? manufacturingInputs : insuranceInputs}
         currentResult={result}
       />
+
+      {/* Benchmark Sources */}
+      <BenchmarkSources industry={selectedIndustry} />
     </div>
   );
 }
