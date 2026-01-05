@@ -48,42 +48,6 @@ export function formatDuration(months: number): string {
 }
 
 /**
- * Calculate Net Present Value (NPV)
- * @param cashFlows Array of cash flows by period
- * @param discountRate Annual discount rate (e.g., 0.10 for 10%)
- * @param periodsPerYear Number of periods per year (12 for monthly)
- */
-export function calculateNPV(
-  cashFlows: number[],
-  discountRate: number,
-  periodsPerYear: number = 12
-): number {
-  const periodRate = discountRate / periodsPerYear;
-
-  return cashFlows.reduce((npv, cashFlow, period) => {
-    return npv + cashFlow / Math.pow(1 + periodRate, period);
-  }, 0);
-}
-
-/**
- * Clamp a value between min and max
- */
-export function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max);
-}
-
-/**
- * Generate an array of numbers for slider steps
- */
-export function generateSteps(min: number, max: number, step: number): number[] {
-  const steps: number[] = [];
-  for (let i = min; i <= max; i += step) {
-    steps.push(Math.round(i * 1000) / 1000);
-  }
-  return steps;
-}
-
-/**
  * Copy text to clipboard
  */
 export async function copyToClipboard(text: string): Promise<boolean> {

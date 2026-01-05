@@ -1,11 +1,11 @@
 import jsPDF from 'jspdf';
-import { ROIResult, Industry } from '../calculators/types';
+import { ROIResult, Industry, ManufacturingInputs, InsuranceInputs } from '../calculators/types';
 import { formatCurrency, formatPercentage, formatDuration } from './calculations';
 
 interface PDFExportOptions {
   industry: Industry;
   result: ROIResult;
-  inputs: Record<string, number>;
+  inputs: ManufacturingInputs | InsuranceInputs;
   companyName?: string;
   preparedBy?: string;
 }

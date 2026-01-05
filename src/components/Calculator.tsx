@@ -18,6 +18,7 @@ import Assumptions from './Assumptions';
 import ScenarioComparison from './ScenarioComparison';
 import BenchmarkSources from './BenchmarkSources';
 import CalculationAuditTrail from './CalculationAuditTrail';
+import ErrorBoundary from './ErrorBoundary';
 
 // Lazy load the chart component (uses recharts - largest dependency)
 const SensitivityChart = lazy(() => import('./SensitivityChart'));
@@ -27,6 +28,28 @@ function ChartLoading() {
     <div className="bg-white rounded-lg shadow-md p-6 animate-pulse">
       <div className="h-8 bg-gray-200 rounded w-48 mb-4"></div>
       <div className="h-64 bg-gray-100 rounded"></div>
+    </div>
+  );
+}
+
+function ChartError() {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="flex items-center gap-2 mb-4">
+        <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
+        </svg>
+        <h3 className="text-lg font-bold text-gray-800">Sensitivity Chart Unavailable</h3>
+      </div>
+      <p className="text-gray-600 text-sm">
+        The sensitivity analysis chart could not be rendered. Your ROI calculations above are still accurate.
+        Try refreshing the page if you need to view the chart.
+      </p>
     </div>
   );
 }
@@ -49,8 +72,18 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
         return calculateManufacturingROI(manufacturingInputs);
       case 'insurance':
         return calculateInsuranceROI(insuranceInputs);
-      default:
+      case 'healthcare':
+      case 'aquaculture':
+        // These industries are not yet implemented (disabled in UI)
+        // Fall back to manufacturing with a console warning for debugging
+        console.warn(`Industry "${selectedIndustry}" is not yet implemented. Using manufacturing calculator.`);
         return calculateManufacturingROI(manufacturingInputs);
+      default: {
+        // Exhaustive check - TypeScript will error if a new Industry is added without handling
+        const _exhaustiveCheck: never = selectedIndustry;
+        console.error(`Unexpected industry: ${_exhaustiveCheck}`);
+        return calculateManufacturingROI(manufacturingInputs);
+      }
     }
   }, [selectedIndustry, manufacturingInputs, insuranceInputs]);
 
@@ -100,7 +133,7 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
       await generatePDFReport({
         industry: selectedIndustry,
         result,
-        inputs: inputs as unknown as Record<string, number>,
+        inputs,
       });
       setPdfStatus('done');
       setTimeout(() => setPdfStatus('idle'), 2000);
@@ -249,9 +282,11 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
 
       {/* Full Width - Sensitivity Analysis */}
       <div className="mt-6">
-        <Suspense fallback={<ChartLoading />}>
-          <SensitivityChart sensitivity={result.sensitivityAnalysis} />
-        </Suspense>
+        <ErrorBoundary fallback={<ChartError />}>
+          <Suspense fallback={<ChartLoading />}>
+            <SensitivityChart sensitivity={result.sensitivityAnalysis} />
+          </Suspense>
+        </ErrorBoundary>
       </div>
 
       {/* Scenario Comparison */}

@@ -3,7 +3,6 @@ import {
   formatCurrency,
   formatPercentage,
   formatDuration,
-  clamp,
 } from '../utils/calculations';
 
 describe('formatCurrency', () => {
@@ -69,23 +68,5 @@ describe('formatDuration', () => {
 
   it('should use singular form correctly', () => {
     expect(formatDuration(13)).toBe('1 year, 1 month');
-  });
-});
-
-describe('clamp', () => {
-  it('should return value when within range', () => {
-    expect(clamp(5, 0, 10)).toBe(5);
-  });
-
-  it('should return min when value is below', () => {
-    expect(clamp(-5, 0, 10)).toBe(0);
-  });
-
-  it('should return max when value is above', () => {
-    expect(clamp(15, 0, 10)).toBe(10);
-  });
-
-  it('should handle equal min and max', () => {
-    expect(clamp(5, 5, 5)).toBe(5);
   });
 });
