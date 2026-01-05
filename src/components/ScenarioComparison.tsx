@@ -84,6 +84,7 @@ export default function ScenarioComparison({
           Save the current calculation as a scenario to compare different configurations side by side.
         </p>
         <button
+          type="button"
           onClick={() => setShowSaveForm(true)}
           className="px-4 py-2 bg-goodai-teal text-white rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2"
         >
@@ -110,6 +111,7 @@ export default function ScenarioComparison({
         </h2>
         <div className="flex gap-2">
           <button
+            type="button"
             onClick={() => setShowSaveForm(true)}
             className="px-3 py-1.5 text-sm bg-goodai-teal text-white rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-1"
           >
@@ -119,6 +121,7 @@ export default function ScenarioComparison({
             Save Current
           </button>
           <button
+            type="button"
             onClick={() => setIsExpanded(!isExpanded)}
             className="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             aria-label={isExpanded ? 'Collapse comparison' : 'Expand comparison'}
@@ -138,10 +141,12 @@ export default function ScenarioComparison({
               onChange={(e) => setScenarioName(e.target.value)}
               placeholder="Scenario name (e.g., 'Conservative Estimate')"
               maxLength={50}
+              aria-label="Enter scenario name"
               className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-goodai-teal focus:border-transparent"
               onKeyDown={(e) => e.key === 'Enter' && handleSaveScenario()}
             />
             <button
+              type="button"
               onClick={handleSaveScenario}
               disabled={!scenarioName.trim()}
               className="px-4 py-2 bg-goodai-teal text-white rounded-lg hover:bg-teal-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
@@ -149,6 +154,7 @@ export default function ScenarioComparison({
               Save
             </button>
             <button
+              type="button"
               onClick={() => {
                 setShowSaveForm(false);
                 setScenarioName('');
@@ -178,6 +184,7 @@ export default function ScenarioComparison({
                         {scenario.name}
                       </span>
                       <button
+                        type="button"
                         onClick={() => handleDeleteScenario(scenario.id)}
                         className="text-gray-400 hover:text-red-500 ml-1"
                         aria-label={`Delete ${scenario.name}`}
@@ -396,6 +403,7 @@ export default function ScenarioComparison({
           {scenarios.length > 0 && (
             <div className="mt-4 flex justify-end">
               <button
+                type="button"
                 onClick={handleClearAll}
                 className="text-sm text-red-600 hover:text-red-700 hover:underline"
               >
@@ -411,7 +419,7 @@ export default function ScenarioComparison({
         <div className="text-sm text-gray-600">
           <p>
             {scenarios.length} scenario{scenarios.length !== 1 ? 's' : ''} saved.{' '}
-            <button onClick={() => setIsExpanded(true)} className="text-goodai-teal hover:underline">
+            <button type="button" onClick={() => setIsExpanded(true)} className="text-goodai-teal hover:underline">
               Expand to compare
             </button>
           </p>

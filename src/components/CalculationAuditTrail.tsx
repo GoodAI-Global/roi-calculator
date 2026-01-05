@@ -258,9 +258,11 @@ export default function CalculationAuditTrail({
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mt-6">
       <button
+        type="button"
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between text-left"
         aria-expanded={isExpanded}
+        aria-label={isExpanded ? 'Collapse calculation audit trail' : 'Expand calculation audit trail'}
       >
         <h2 className="text-lg font-bold text-gray-800 flex items-center">
           <svg className="w-5 h-5 mr-2 text-goodai-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -288,6 +290,7 @@ export default function CalculationAuditTrail({
         <div className="mt-4">
           <div className="flex justify-end gap-2 mb-4">
             <button
+              type="button"
               onClick={expandAll}
               className="text-sm text-goodai-teal hover:underline"
             >
@@ -295,6 +298,7 @@ export default function CalculationAuditTrail({
             </button>
             <span className="text-gray-300">|</span>
             <button
+              type="button"
               onClick={collapseAll}
               className="text-sm text-gray-500 hover:underline"
             >
@@ -309,9 +313,11 @@ export default function CalculationAuditTrail({
                 className="border border-gray-200 rounded-lg overflow-hidden"
               >
                 <button
+                  type="button"
                   onClick={() => toggleStep(step.id)}
                   className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
                   aria-expanded={expandedSteps.has(step.id)}
+                  aria-label={`${step.label}: ${step.result}`}
                 >
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 bg-goodai-teal text-white rounded-full flex items-center justify-center text-xs font-bold">

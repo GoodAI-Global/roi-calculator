@@ -15,9 +15,15 @@ interface PDFExportOptions {
  */
 function sanitizeText(text: string | undefined, maxLength: number = 100): string {
   if (!text) return '';
-  // Remove control characters and limit length
+  // Remove control characters (ASCII 0-31 and 127) and limit length
+  // Using character code filtering instead of regex for clarity
   return text
-    .replace(/[\x00-\x1F\x7F]/g, '')
+    .split('')
+    .filter((char) => {
+      const code = char.charCodeAt(0);
+      return code >= 32 && code !== 127;
+    })
+    .join('')
     .substring(0, maxLength)
     .trim();
 }
