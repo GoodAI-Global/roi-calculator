@@ -10,6 +10,8 @@ export default defineConfig({
         manualChunks: {
           // Separate recharts into its own chunk (largest dependency)
           charts: ['recharts'],
+          // Separate PDF libraries into own chunk (lazy loaded)
+          pdf: ['jspdf', 'html2canvas'],
           // Separate React into its own chunk
           vendor: ['react', 'react-dom'],
         },
