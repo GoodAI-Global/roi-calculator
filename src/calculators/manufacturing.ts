@@ -1,5 +1,6 @@
-import { ManufacturingInputs, ROIResult } from './types';
+import { ManufacturingInputs, ROIResult, defaultFinancialConfig } from './types';
 import { calculateSensitivityAnalysis } from '../utils/sensitivity';
+import { calculateEnhancedFinancialMetrics } from '../utils/financial';
 
 /**
  * Manufacturing ROI Calculator
@@ -68,6 +69,15 @@ export function calculateManufacturingROI(inputs: ManufacturingInputs): ROIResul
     validatedInputs.timelineMonths
   );
 
+  // Calculate enhanced financial metrics (NPV, IRR, TCO, etc.)
+  const financialMetrics = calculateEnhancedFinancialMetrics(
+    validatedInputs.implementationCost,
+    monthlyDowntimeSavings, // Gross savings before maintenance
+    validatedInputs.monthlyMaintenanceCost,
+    validatedInputs.timelineMonths,
+    defaultFinancialConfig
+  );
+
   return {
     paybackMonths: Math.round(paybackMonths * 10) / 10,
     firstYearROI: Math.round(firstYearROI * 10) / 10,
@@ -78,6 +88,8 @@ export function calculateManufacturingROI(inputs: ManufacturingInputs): ROIResul
     assumptions: getAssumptions(validatedInputs),
     caveats: getCaveats(),
     sensitivityAnalysis,
+    financialMetrics,
+    financialConfig: defaultFinancialConfig,
   };
 }
 

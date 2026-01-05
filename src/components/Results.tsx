@@ -99,6 +99,55 @@ export default function Results({ result }: ResultsProps) {
         </div>
       </div>
 
+      {/* Enterprise Financial Metrics */}
+      <div className="mt-4 bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-4 border border-slate-200">
+        <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+          <svg className="w-4 h-4 mr-2 text-goodai-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          Enterprise Financial Metrics ({result.financialConfig.analysisYears}-Year Analysis)
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+          <div className="bg-white rounded p-3 border border-slate-100">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">NPV</p>
+            <p className={`text-lg font-bold ${result.financialMetrics.npv >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {formatCurrency(result.financialMetrics.npv)}
+            </p>
+            <p className="text-xs text-gray-400">at {formatPercentage(result.financialConfig.discountRate * 100)} discount</p>
+          </div>
+          <div className="bg-white rounded p-3 border border-slate-100">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">IRR</p>
+            <p className={`text-lg font-bold ${result.financialMetrics.irr > result.financialConfig.discountRate ? 'text-green-600' : 'text-amber-600'}`}>
+              {result.financialMetrics.irr > 5 ? '>500%' : formatPercentage(result.financialMetrics.irr * 100)}
+            </p>
+            <p className="text-xs text-gray-400">
+              {result.financialMetrics.irr > result.financialConfig.discountRate ? 'Exceeds hurdle rate' : 'Below hurdle rate'}
+            </p>
+          </div>
+          <div className="bg-white rounded p-3 border border-slate-100">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">TCO</p>
+            <p className="text-lg font-bold text-gray-900">
+              {formatCurrency(result.financialMetrics.tco)}
+            </p>
+            <p className="text-xs text-gray-400">{result.financialConfig.analysisYears}-year total cost</p>
+          </div>
+          <div className="bg-white rounded p-3 border border-slate-100">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">Profitability Index</p>
+            <p className={`text-lg font-bold ${result.financialMetrics.profitabilityIndex >= 1 ? 'text-green-600' : 'text-amber-600'}`}>
+              {result.financialMetrics.profitabilityIndex.toFixed(2)}x
+            </p>
+            <p className="text-xs text-gray-400">
+              {result.financialMetrics.profitabilityIndex >= 1 ? 'Value creating' : 'Value destroying'}
+            </p>
+          </div>
+        </div>
+        {result.financialMetrics.discountedPaybackMonths !== Infinity && (
+          <p className="mt-3 text-xs text-gray-500">
+            Discounted payback: {result.financialMetrics.discountedPaybackMonths.toFixed(1)} months (accounting for time value of money)
+          </p>
+        )}
+      </div>
+
       {(isNegativeROI || isLongPayback) && (
         <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
           <p className="text-sm text-amber-800">
