@@ -42,6 +42,7 @@ export default function Assumptions({ result }: AssumptionsProps) {
       {/* Assumptions - Collapsible */}
       <div className="border-t pt-4">
         <button
+          type="button"
           onClick={() => setIsExpanded(!isExpanded)}
           className="flex items-center justify-between w-full text-left"
         >

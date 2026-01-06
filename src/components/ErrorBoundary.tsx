@@ -66,6 +66,7 @@ export default class ErrorBoundary extends Component<Props, State> {
               </details>
             )}
             <button
+              type="button"
               onClick={this.handleReset}
               className="px-4 py-2 bg-goodai-teal text-white rounded-lg hover:bg-opacity-90 transition-colors"
             >

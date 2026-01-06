@@ -169,6 +169,7 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
           {/* Action Buttons */}
           <div className="mt-4 flex gap-3" role="group" aria-label="Calculator actions">
             <button
+              type="button"
               onClick={handleReset}
               aria-label="Reset all inputs to default values"
               className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
@@ -176,6 +177,7 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
               Reset to Defaults
             </button>
             <button
+              type="button"
               onClick={handleCopyJSON}
               aria-label={
                 copyStatus === 'copied'
@@ -235,6 +237,7 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
               )}
             </button>
             <button
+              type="button"
               onClick={handleExportPDF}
               disabled={pdfStatus === 'generating'}
               aria-label={

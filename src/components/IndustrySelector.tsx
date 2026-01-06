@@ -22,6 +22,7 @@ export default function IndustrySelector({ selectedIndustry, onSelect }: Industr
       <div className="flex flex-wrap gap-2" role="tablist" aria-labelledby="industry-label">
         {industries.map((industry) => (
           <button
+            type="button"
             key={industry.id}
             role="tab"
             aria-selected={selectedIndustry === industry.id}
