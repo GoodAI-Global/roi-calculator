@@ -1,0 +1,14 @@
+# Code Owners
+# These owners will be requested for review on PRs
+
+# Default owners for everything
+* @good-ai/engineering
+
+# Calculator logic requires domain expertise
+/src/calculators/ @good-ai/engineering @good-ai/domain-experts
+
+# Financial calculations require extra review
+/src/utils/financial.ts @good-ai/engineering @good-ai/finance
+
+# CI/CD changes
+/.github/ @good-ai/platform

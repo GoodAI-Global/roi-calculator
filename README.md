@@ -1,162 +1,102 @@
 # Good AI ROI Calculator
 
-An interactive, transparent ROI calculator for AI implementations. Unlike vendor calculators that inflate projections with hidden assumptions, this tool shows **everything**.
+An interactive ROI calculator for AI implementations with transparent assumptions and conservative estimates.
 
-**[Live Demo](#)** *(placeholder)*
+## What This Is
 
-## Philosophy
+- A **client-side React application** for calculating AI implementation ROI
+- **Manufacturing & Insurance calculators** with industry-specific metrics
+- **Transparent calculations** — all assumptions visible and editable
+- **Conservative estimates** — uses p50 (median) benchmarks, not optimistic outliers
+- **Sensitivity analysis** — shows conservative, expected, and optimistic scenarios
+- **Enterprise financial metrics** — NPV, IRR, TCO, profitability index
 
-**Evidence over opinions.** This calculator is built on Good AI's core principles:
+## What This Is NOT
 
-- **Transparent assumptions** — Every input visible and editable
-- **Conservative estimates** — Uses p50 (median) benchmarks, not optimistic outliers
-- **No vendor inflation** — Includes sensitivity analysis and prominent caveats
-- **Honest caveats** — Risks and limitations always visible
+- **Not production-ready** — this is v0.x software under active development
+- **Not financial advice** — projections are estimates based on industry benchmarks
+- **Not a backend service** — all calculations run client-side, no data is stored
+- **Not vendor-certified** — benchmarks are from public industry research
+- **Not complete** — Healthcare and Aquaculture calculators are planned but not implemented
 
-## Features
-
-- **Manufacturing Calculator** — Predictive maintenance, OEE optimization, downtime reduction
-- **Insurance Calculator** — Claims automation, fraud detection improvements
-- **Real-time calculations** — Results update as you adjust inputs
-- **Sensitivity analysis** — Conservative, expected, and optimistic scenarios
-- **Export to JSON** — Full data export for further analysis
-
-## How This Differs from Vendor Calculators
-
-| Typical Vendor Calculator | Good AI Calculator |
-|---------------------------|-------------------|
-| Hidden assumptions | All assumptions visible |
-| p90 (optimistic) benchmarks | p50 (median) benchmarks |
-| Single-point estimates | Sensitivity ranges (60%-140%) |
-| Caveats buried in fine print | Caveats prominently displayed |
-| Fantasy ROI numbers | Conservative, defensible projections |
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- npm or yarn
-
-### Installation
+## Quickstart
 
 ```bash
-# Clone the repository
+# Clone and install (Node.js 18+ required)
 git clone https://github.com/good-ai/roi-calculator.git
 cd roi-calculator
-
-# Install dependencies
 npm install
 
-# Start development server
+# Run development server
 npm run dev
-
 # Open http://localhost:5173
+
+# Or use Make
+make setup
+make dev
 ```
 
-### Build for Production
+## Available Commands
 
 ```bash
-npm run build
-npm run preview
+npm run dev        # Start development server
+npm run build      # Production build
+npm run test       # Run tests
+npm run lint       # Run ESLint
+npm run typecheck  # TypeScript check
 ```
+
+## Project Status
+
+| Feature | Status |
+|---------|--------|
+| Manufacturing Calculator | Implemented |
+| Insurance Calculator | Implemented |
+| PDF Export | Implemented |
+| Scenario Comparison | Implemented |
+| Healthcare Calculator | Planned |
+| Aquaculture Calculator | Planned |
+| Data Persistence | Not Planned |
 
 ## Calculation Methodology
 
 ### Manufacturing ROI
-
-The manufacturing calculator focuses on **predictive maintenance** and **OEE optimization**:
-
-1. **Downtime Reduction** — OEE improvement correlates with downtime reduction at a 2.5x factor (conservative industry benchmark)
-2. **Monthly Savings** — `Downtime Hours × Reduction % × Cost per Hour - Maintenance Costs`
-3. **Payback Period** — `Implementation Cost ÷ Monthly Net Savings`
-4. **ROI Calculation** — Accounts for implementation timeline (no savings during implementation)
-
-**Key Benchmarks:**
-- Typical OEE improvement: 5-15 percentage points
-- Downtime correlation factor: 2.5x (median)
-- Conservative scenario: 60% of expected benefits
-- Optimistic scenario: 140% of expected benefits
+- **Downtime Reduction**: OEE improvement correlates with downtime reduction at 2.5x factor
+- **Savings**: `Downtime Hours × Reduction % × Cost per Hour - Maintenance Costs`
+- **Sensitivity**: Conservative (60%), Expected (100%), Optimistic (140%)
 
 ### Insurance ROI
+- **Processing Savings**: 40% reduction in claims processing time
+- **Fraud Detection**: 2x improvement in detection rate, capped at 60%
 
-The insurance calculator covers **claims automation** and **fraud detection**:
+### Financial Metrics
+- **NPV**: Net Present Value at 10% discount rate over 3 years
+- **IRR**: Internal Rate of Return using Newton-Raphson method
+- **TCO**: Total Cost of Ownership with 3% inflation adjustment
 
-1. **Processing Savings** — 40% reduction in claims processing time (conservative benchmark)
-2. **Fraud Detection** — 2x improvement in detection rate, capped at 60%
-3. **Combined Benefits** — Labor cost savings + fraud prevention savings
-
-## Default Values
-
-### Manufacturing
-
-| Parameter | Default | Notes |
-|-----------|---------|-------|
-| Current OEE | 65% | Industry average |
-| Target Improvement | +10% | Realistic for AI implementation |
-| Unplanned Downtime | 40 hrs/month | Typical manufacturing facility |
-| Cost per Hour | $5,000 | Includes lost production, labor |
-| Implementation Cost | $150,000 | Software, integration, training |
-| Monthly Maintenance | $2,000 | Ongoing license and support |
-| Timeline | 6 months | Time to measurable results |
-
-### Insurance
-
-| Parameter | Default | Notes |
-|-----------|---------|-------|
-| Annual Claims Volume | 50,000 | Mid-size insurer |
-| Processing Time | 45 min/claim | Manual processing average |
-| Labor Cost | $35/hour | Fully loaded |
-| Fraud Detection Rate | 15% | Current industry average |
-| Avg Fraud Claim | $8,000 | Industry benchmark |
-| Implementation Cost | $200,000 | Includes integration |
-| Monthly Maintenance | $3,000 | Platform fees |
-| Timeline | 9 months | Regulatory approval included |
-
-## Project Structure
+## Test Coverage
 
 ```
-roi-calculator/
-├── src/
-│   ├── components/          # React components
-│   │   ├── Calculator.tsx   # Main calculator orchestrator
-│   │   ├── IndustrySelector.tsx
-│   │   ├── MetricsInput.tsx
-│   │   ├── Results.tsx
-│   │   ├── Assumptions.tsx
-│   │   └── SensitivityChart.tsx
-│   ├── calculators/         # Calculation logic
-│   │   ├── types.ts         # TypeScript interfaces
-│   │   ├── manufacturing.ts # Manufacturing ROI logic
-│   │   └── insurance.ts     # Insurance ROI logic
-│   ├── data/
-│   │   └── benchmarks.ts    # Industry benchmark data
-│   └── utils/
-│       └── calculations.ts  # Utility functions
-├── public/
-│   └── favicon.ico
-└── package.json
+88 tests across 5 test files:
+- Financial calculations (33 tests)
+- Manufacturing calculator (17 tests)
+- Insurance calculator (15 tests)
+- Calculations utilities (13 tests)
+- Sensitivity analysis (10 tests)
 ```
 
 ## Contributing
 
-We welcome contributions! Please ensure:
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-1. All calculations include visible assumptions
-2. Use conservative (p50) benchmarks
-3. Include appropriate caveats
-4. Test with realistic industry data
+## Security
+
+See [SECURITY.md](SECURITY.md) for reporting vulnerabilities.
 
 ## License
 
 MIT License — see [LICENSE](LICENSE)
 
-## About Good AI
-
-Good AI is a premium enterprise AI consultancy focused on **evidence-based** AI implementations. We believe in transparency, conservative estimates, and honest assessments of AI capabilities.
-
-**Contact:** [hello@goodai.com](mailto:hello@goodai.com)
-
 ---
 
-*"Evidence over opinions"* — Good AI
+*Built by Good AI — "Evidence over opinions"*
