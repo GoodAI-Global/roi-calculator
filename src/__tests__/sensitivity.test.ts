@@ -24,10 +24,8 @@ describe('calculateSensitivityAnalysis', () => {
     });
 
     it('should have correct ordering of scenarios', () => {
-      expect(result.conservative.threeYearROI)
-        .toBeLessThan(result.expected.threeYearROI);
-      expect(result.expected.threeYearROI)
-        .toBeLessThan(result.optimistic.threeYearROI);
+      expect(result.conservative.threeYearROI).toBeLessThan(result.expected.threeYearROI);
+      expect(result.expected.threeYearROI).toBeLessThan(result.optimistic.threeYearROI);
     });
   });
 

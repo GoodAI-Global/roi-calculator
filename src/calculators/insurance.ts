@@ -20,7 +20,7 @@ export function calculateInsuranceROI(inputs: InsuranceInputs): ROIResult {
     (validatedInputs.annualClaimsVolume * validatedInputs.averageClaimProcessingTimeMinutes) / 60;
 
   // Conservative 40% time reduction with AI assistance
-  const processingSavingsPercent = 0.40;
+  const processingSavingsPercent = 0.4;
   const annualHoursSaved = currentAnnualProcessingHours * processingSavingsPercent;
   const annualProcessingSavings = annualHoursSaved * validatedInputs.laborCostPerHour;
   const monthlyProcessingSavings = annualProcessingSavings / 12;
@@ -30,8 +30,9 @@ export function calculateInsuranceROI(inputs: InsuranceInputs): ROIResult {
   const estimatedFraudulentClaims = validatedInputs.annualClaimsVolume * 0.02;
 
   // Current fraud caught vs. new fraud caught with AI (2x improvement, capped at 60%)
-  const newFraudDetectionRate = Math.min(0.60, validatedInputs.currentFraudDetectionRate * 2);
-  const additionalFraudCaught = estimatedFraudulentClaims * (newFraudDetectionRate - validatedInputs.currentFraudDetectionRate);
+  const newFraudDetectionRate = Math.min(0.6, validatedInputs.currentFraudDetectionRate * 2);
+  const additionalFraudCaught =
+    estimatedFraudulentClaims * (newFraudDetectionRate - validatedInputs.currentFraudDetectionRate);
   const annualFraudSavings = additionalFraudCaught * validatedInputs.averageFraudClaimValue;
   const monthlyFraudSavings = annualFraudSavings / 12;
 

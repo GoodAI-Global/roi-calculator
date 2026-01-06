@@ -1,4 +1,8 @@
-import { FinancialConfig, EnhancedFinancialMetrics, defaultFinancialConfig } from '../calculators/types';
+import {
+  FinancialConfig,
+  EnhancedFinancialMetrics,
+  defaultFinancialConfig,
+} from '../calculators/types';
 
 /**
  * Calculate Net Present Value (NPV)
@@ -53,7 +57,7 @@ export function calculateIRR(
     for (let t = 0; t < monthlyCashFlows.length; t++) {
       const discountFactor = Math.pow(1 + monthlyRate, t + 1);
       npv += monthlyCashFlows[t] / discountFactor;
-      npvDerivative -= (t + 1) * monthlyCashFlows[t] / Math.pow(1 + monthlyRate, t + 2);
+      npvDerivative -= ((t + 1) * monthlyCashFlows[t]) / Math.pow(1 + monthlyRate, t + 2);
     }
 
     // Avoid division by zero
@@ -236,9 +240,8 @@ export function calculateEnhancedFinancialMetrics(
 
   // Calculate Profitability Index
   // PI = (NPV + Initial Investment) / Initial Investment = 1 + (NPV / Initial Investment)
-  const profitabilityIndex = initialInvestment > 0
-    ? (npv + initialInvestment) / initialInvestment
-    : 0;
+  const profitabilityIndex =
+    initialInvestment > 0 ? (npv + initialInvestment) / initialInvestment : 0;
 
   // Calculate Discounted Payback
   const discountedPaybackMonths = calculateDiscountedPayback(
@@ -252,8 +255,9 @@ export function calculateEnhancedFinancialMetrics(
     irr,
     tco: Math.round(tco),
     profitabilityIndex: Math.round(profitabilityIndex * 100) / 100,
-    discountedPaybackMonths: discountedPaybackMonths === Infinity
-      ? Infinity
-      : Math.round(discountedPaybackMonths * 10) / 10,
+    discountedPaybackMonths:
+      discountedPaybackMonths === Infinity
+        ? Infinity
+        : Math.round(discountedPaybackMonths * 10) / 10,
   };
 }

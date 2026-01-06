@@ -102,7 +102,7 @@ describe('calculateManufacturingROI', () => {
     it('should calculate correct monthly savings', () => {
       const inputs: ManufacturingInputs = {
         currentOEE: 0.65,
-        targetOEEImprovement: 0.10, // 10%
+        targetOEEImprovement: 0.1, // 10%
         unplannedDowntimeHoursPerMonth: 40,
         costPerDowntimeHour: 5000,
         implementationCost: 150000,
@@ -122,7 +122,7 @@ describe('calculateManufacturingROI', () => {
         monthlyMaintenanceCost: 0,
         unplannedDowntimeHoursPerMonth: 20,
         costPerDowntimeHour: 2000,
-        targetOEEImprovement: 0.10, // 10% = 25% downtime reduction
+        targetOEEImprovement: 0.1, // 10% = 25% downtime reduction
       };
       const result = calculateManufacturingROI(inputs);
 
@@ -153,19 +153,23 @@ describe('calculateManufacturingROI', () => {
     it('should have conservative < expected < optimistic for ROI', () => {
       const result = calculateManufacturingROI(manufacturingDefaults);
 
-      expect(result.sensitivityAnalysis.conservative.threeYearROI)
-        .toBeLessThan(result.sensitivityAnalysis.expected.threeYearROI);
-      expect(result.sensitivityAnalysis.expected.threeYearROI)
-        .toBeLessThan(result.sensitivityAnalysis.optimistic.threeYearROI);
+      expect(result.sensitivityAnalysis.conservative.threeYearROI).toBeLessThan(
+        result.sensitivityAnalysis.expected.threeYearROI
+      );
+      expect(result.sensitivityAnalysis.expected.threeYearROI).toBeLessThan(
+        result.sensitivityAnalysis.optimistic.threeYearROI
+      );
     });
 
     it('should have optimistic < expected < conservative for payback', () => {
       const result = calculateManufacturingROI(manufacturingDefaults);
 
-      expect(result.sensitivityAnalysis.optimistic.paybackMonths)
-        .toBeLessThan(result.sensitivityAnalysis.expected.paybackMonths);
-      expect(result.sensitivityAnalysis.expected.paybackMonths)
-        .toBeLessThan(result.sensitivityAnalysis.conservative.paybackMonths);
+      expect(result.sensitivityAnalysis.optimistic.paybackMonths).toBeLessThan(
+        result.sensitivityAnalysis.expected.paybackMonths
+      );
+      expect(result.sensitivityAnalysis.expected.paybackMonths).toBeLessThan(
+        result.sensitivityAnalysis.conservative.paybackMonths
+      );
     });
   });
 });

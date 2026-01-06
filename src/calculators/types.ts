@@ -4,26 +4,26 @@ export type Industry = 'manufacturing' | 'insurance' | 'healthcare' | 'aquacultu
  * Financial configuration for enterprise calculations
  */
 export interface FinancialConfig {
-  discountRate: number;        // Annual discount rate for NPV (e.g., 0.10 for 10%)
-  analysisYears: number;       // Number of years for TCO/NPV analysis (default: 5)
-  inflationRate: number;       // Annual cost inflation rate (e.g., 0.03 for 3%)
+  discountRate: number; // Annual discount rate for NPV (e.g., 0.10 for 10%)
+  analysisYears: number; // Number of years for TCO/NPV analysis (default: 5)
+  inflationRate: number; // Annual cost inflation rate (e.g., 0.03 for 3%)
 }
 
 export const defaultFinancialConfig: FinancialConfig = {
-  discountRate: 0.10,          // 10% - typical enterprise hurdle rate
+  discountRate: 0.1, // 10% - typical enterprise hurdle rate
   analysisYears: 5,
-  inflationRate: 0.03,         // 3% annual inflation
+  inflationRate: 0.03, // 3% annual inflation
 };
 
 /**
  * Enhanced financial metrics for enterprise decision-making
  */
 export interface EnhancedFinancialMetrics {
-  npv: number;                 // Net Present Value
-  irr: number;                 // Internal Rate of Return (as decimal, e.g., 0.25 for 25%)
-  tco: number;                 // Total Cost of Ownership (5-year)
-  profitabilityIndex: number;  // NPV / Initial Investment
-  discountedPaybackMonths: number;  // Payback accounting for time value of money
+  npv: number; // Net Present Value
+  irr: number; // Internal Rate of Return (as decimal, e.g., 0.25 for 25%)
+  tco: number; // Total Cost of Ownership (5-year)
+  profitabilityIndex: number; // NPV / Initial Investment
+  discountedPaybackMonths: number; // Payback accounting for time value of money
 }
 
 export interface SensitivityScenario {
@@ -54,29 +54,29 @@ export interface ROIResult {
 }
 
 export interface ManufacturingInputs {
-  currentOEE: number;              // 0-1 (e.g., 0.65 for 65%)
-  targetOEEImprovement: number;    // percentage points (e.g., 0.10 for 10%)
+  currentOEE: number; // 0-1 (e.g., 0.65 for 65%)
+  targetOEEImprovement: number; // percentage points (e.g., 0.10 for 10%)
   unplannedDowntimeHoursPerMonth: number;
-  costPerDowntimeHour: number;     // USD
-  implementationCost: number;      // USD
-  monthlyMaintenanceCost: number;  // USD
+  costPerDowntimeHour: number; // USD
+  implementationCost: number; // USD
+  monthlyMaintenanceCost: number; // USD
   timelineMonths: number;
 }
 
 export interface InsuranceInputs {
   annualClaimsVolume: number;
   averageClaimProcessingTimeMinutes: number;
-  laborCostPerHour: number;        // USD
+  laborCostPerHour: number; // USD
   currentFraudDetectionRate: number; // 0-1
-  averageFraudClaimValue: number;  // USD
-  implementationCost: number;      // USD
-  monthlyMaintenanceCost: number;  // USD
+  averageFraudClaimValue: number; // USD
+  implementationCost: number; // USD
+  monthlyMaintenanceCost: number; // USD
   timelineMonths: number;
 }
 
 export const manufacturingDefaults: ManufacturingInputs = {
   currentOEE: 0.65,
-  targetOEEImprovement: 0.10,
+  targetOEEImprovement: 0.1,
   unplannedDowntimeHoursPerMonth: 40,
   costPerDowntimeHour: 5000,
   implementationCost: 150000,

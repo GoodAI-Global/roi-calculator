@@ -12,10 +12,12 @@ export default function BenchmarkSources({ industry }: BenchmarkSourcesProps) {
   const benchmark = industryBenchmarks[industry];
   if (!benchmark?.sources) return null;
 
-  const sources = benchmark.sources.map((source) => ({
-    ...source,
-    citation: benchmarkCitations[source.citationId],
-  })).filter((s) => s.citation);
+  const sources = benchmark.sources
+    .map((source) => ({
+      ...source,
+      citation: benchmarkCitations[source.citationId],
+    }))
+    .filter((s) => s.citation);
 
   if (sources.length === 0) return null;
 
@@ -52,8 +54,18 @@ export default function BenchmarkSources({ industry }: BenchmarkSourcesProps) {
         aria-label={isExpanded ? 'Collapse benchmark sources' : 'Expand benchmark sources'}
       >
         <h2 className="text-lg font-bold text-gray-800 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-goodai-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          <svg
+            className="w-5 h-5 mr-2 text-goodai-blue"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            />
           </svg>
           Benchmark Sources
           <span className="ml-2 text-sm font-normal text-gray-500">
@@ -91,9 +103,7 @@ export default function BenchmarkSources({ industry }: BenchmarkSourcesProps) {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900">
-                      {source.citation.title}
-                    </h3>
+                    <h3 className="font-medium text-gray-900">{source.citation.title}</h3>
                     <p className="text-sm text-gray-600 mt-1">
                       {source.citation.source} ({source.citation.year})
                     </p>
@@ -102,7 +112,8 @@ export default function BenchmarkSources({ industry }: BenchmarkSourcesProps) {
                     </p>
                     {source.citation.methodology && (
                       <p className="text-xs text-gray-400 mt-1">
-                        <span className="font-medium">Methodology:</span> {source.citation.methodology}
+                        <span className="font-medium">Methodology:</span>{' '}
+                        {source.citation.methodology}
                       </p>
                     )}
                   </div>
@@ -116,8 +127,18 @@ export default function BenchmarkSources({ industry }: BenchmarkSourcesProps) {
                         className="text-xs text-goodai-blue hover:underline flex items-center gap-1"
                       >
                         View Source
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
                         </svg>
                       </a>
                     )}
@@ -129,9 +150,10 @@ export default function BenchmarkSources({ industry }: BenchmarkSourcesProps) {
 
           <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg">
             <p className="text-sm text-blue-800">
-              <strong>Note on Methodology:</strong> We deliberately use conservative estimates (p50/median values)
-              rather than optimistic outliers to provide realistic expectations for ROI calculations.
-              Actual results depend on implementation quality, data availability, and organizational factors.
+              <strong>Note on Methodology:</strong> We deliberately use conservative estimates
+              (p50/median values) rather than optimistic outliers to provide realistic expectations
+              for ROI calculations. Actual results depend on implementation quality, data
+              availability, and organizational factors.
             </p>
           </div>
         </div>

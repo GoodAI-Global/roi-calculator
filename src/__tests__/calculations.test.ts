@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  formatCurrency,
-  formatPercentage,
-  formatDuration,
-} from '../utils/calculations';
+import { formatCurrency, formatPercentage, formatDuration } from '../utils/calculations';
 
 describe('formatCurrency', () => {
   it('should format positive numbers', () => {

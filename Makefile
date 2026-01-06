@@ -1,4 +1,4 @@
-.PHONY: setup dev build test lint typecheck clean help
+.PHONY: setup dev build test lint typecheck format format-check clean help ci
 
 # Default target
 .DEFAULT_GOAL := help
@@ -34,6 +34,10 @@ test-coverage:
 lint:
 	npm run lint
 
+## lint-fix: Fix ESLint issues
+lint-fix:
+	npm run lint:fix
+
 ## typecheck: Run TypeScript type checking
 typecheck:
 	npm run typecheck
@@ -42,14 +46,18 @@ typecheck:
 format:
 	npm run format
 
+## format-check: Check code formatting
+format-check:
+	npm run format:check
+
 ## clean: Remove build artifacts and dependencies
 clean:
 	rm -rf dist
 	rm -rf node_modules
 	rm -rf coverage
 
-## ci: Run all CI checks (lint, typecheck, test, build)
-ci: lint typecheck test build
+## ci: Run all CI checks (lint, format-check, typecheck, test, build)
+ci: lint format-check typecheck test build
 
 ## help: Show this help message
 help:

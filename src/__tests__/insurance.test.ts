@@ -62,7 +62,7 @@ describe('calculateInsuranceROI', () => {
     it('should cap fraud detection improvement at 60%', () => {
       const inputs: InsuranceInputs = {
         ...insuranceDefaults,
-        currentFraudDetectionRate: 0.50, // 50% - doubling would be 100%, should cap at 60%
+        currentFraudDetectionRate: 0.5, // 50% - doubling would be 100%, should cap at 60%
       };
       const result = calculateInsuranceROI(inputs);
 
@@ -97,7 +97,7 @@ describe('calculateInsuranceROI', () => {
         annualClaimsVolume: 12000, // 1000/month
         averageClaimProcessingTimeMinutes: 60, // 1 hour
         laborCostPerHour: 50,
-        currentFraudDetectionRate: 0.10,
+        currentFraudDetectionRate: 0.1,
         averageFraudClaimValue: 10000,
         implementationCost: 100000,
         monthlyMaintenanceCost: 0,
@@ -141,19 +141,23 @@ describe('calculateInsuranceROI', () => {
     it('should have conservative < expected < optimistic for ROI', () => {
       const result = calculateInsuranceROI(insuranceDefaults);
 
-      expect(result.sensitivityAnalysis.conservative.threeYearROI)
-        .toBeLessThan(result.sensitivityAnalysis.expected.threeYearROI);
-      expect(result.sensitivityAnalysis.expected.threeYearROI)
-        .toBeLessThan(result.sensitivityAnalysis.optimistic.threeYearROI);
+      expect(result.sensitivityAnalysis.conservative.threeYearROI).toBeLessThan(
+        result.sensitivityAnalysis.expected.threeYearROI
+      );
+      expect(result.sensitivityAnalysis.expected.threeYearROI).toBeLessThan(
+        result.sensitivityAnalysis.optimistic.threeYearROI
+      );
     });
 
     it('should have optimistic < expected < conservative for payback', () => {
       const result = calculateInsuranceROI(insuranceDefaults);
 
-      expect(result.sensitivityAnalysis.optimistic.paybackMonths)
-        .toBeLessThan(result.sensitivityAnalysis.expected.paybackMonths);
-      expect(result.sensitivityAnalysis.expected.paybackMonths)
-        .toBeLessThan(result.sensitivityAnalysis.conservative.paybackMonths);
+      expect(result.sensitivityAnalysis.optimistic.paybackMonths).toBeLessThan(
+        result.sensitivityAnalysis.expected.paybackMonths
+      );
+      expect(result.sensitivityAnalysis.expected.paybackMonths).toBeLessThan(
+        result.sensitivityAnalysis.conservative.paybackMonths
+      );
     });
   });
 });

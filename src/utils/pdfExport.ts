@@ -43,13 +43,23 @@ export async function generatePDFReport(options: PDFExportOptions): Promise<void
   let yPos = margin;
 
   // Helper functions
-  const addText = (text: string, x: number, y: number, options?: {
-    fontSize?: number;
-    fontStyle?: 'normal' | 'bold';
-    align?: 'left' | 'center' | 'right';
-    color?: [number, number, number];
-  }) => {
-    const { fontSize = 10, fontStyle = 'normal', align = 'left', color = [0, 0, 0] } = options || {};
+  const addText = (
+    text: string,
+    x: number,
+    y: number,
+    options?: {
+      fontSize?: number;
+      fontStyle?: 'normal' | 'bold';
+      align?: 'left' | 'center' | 'right';
+      color?: [number, number, number];
+    }
+  ) => {
+    const {
+      fontSize = 10,
+      fontStyle = 'normal',
+      align = 'left',
+      color = [0, 0, 0],
+    } = options || {};
     doc.setFontSize(fontSize);
     doc.setFont('helvetica', fontStyle);
     doc.setTextColor(...color);
@@ -75,21 +85,26 @@ export async function generatePDFReport(options: PDFExportOptions): Promise<void
     fontSize: 24,
     fontStyle: 'bold',
     align: 'center',
-    color: [78, 205, 196]
+    color: [78, 205, 196],
   });
   yPos += 8;
   addText('ROI Analysis Report', pageWidth / 2, yPos, {
     fontSize: 18,
     fontStyle: 'bold',
     align: 'center',
-    color: [0, 0, 0]
+    color: [0, 0, 0],
   });
   yPos += 6;
-  addText(`Industry: ${industry.charAt(0).toUpperCase() + industry.slice(1)}`, pageWidth / 2, yPos, {
-    fontSize: 12,
-    align: 'center',
-    color: [100, 100, 100]
-  });
+  addText(
+    `Industry: ${industry.charAt(0).toUpperCase() + industry.slice(1)}`,
+    pageWidth / 2,
+    yPos,
+    {
+      fontSize: 12,
+      align: 'center',
+      color: [100, 100, 100],
+    }
+  );
   yPos += 10;
   addLine(yPos, [78, 205, 196]);
   yPos += 5;
@@ -98,14 +113,17 @@ export async function generatePDFReport(options: PDFExportOptions): Promise<void
   const currentDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
-  addText(`Report Generated: ${currentDate}`, margin, yPos, { fontSize: 9, color: [128, 128, 128] });
+  addText(`Report Generated: ${currentDate}`, margin, yPos, {
+    fontSize: 9,
+    color: [128, 128, 128],
+  });
   if (companyName) {
     addText(`Prepared for: ${companyName}`, pageWidth - margin, yPos, {
       fontSize: 9,
       color: [128, 128, 128],
-      align: 'right'
+      align: 'right',
     });
   }
   yPos += 4;
@@ -132,13 +150,13 @@ export async function generatePDFReport(options: PDFExportOptions): Promise<void
     addText(item.label, boxX + boxWidth / 2, yPos + 6, {
       fontSize: 8,
       align: 'center',
-      color: [100, 100, 100]
+      color: [100, 100, 100],
     });
     addText(item.value, boxX + boxWidth / 2, yPos + 13, {
       fontSize: 11,
       fontStyle: 'bold',
       align: 'center',
-      color: [0, 0, 0]
+      color: [0, 0, 0],
     });
   });
   yPos += 25;
@@ -150,24 +168,29 @@ export async function generatePDFReport(options: PDFExportOptions): Promise<void
     {
       label: 'Net Present Value (NPV)',
       value: formatCurrency(result.financialMetrics.npv),
-      description: `At ${formatPercentage(result.financialConfig.discountRate * 100)} discount rate`
+      description: `At ${formatPercentage(result.financialConfig.discountRate * 100)} discount rate`,
     },
     {
       label: 'Internal Rate of Return (IRR)',
-      value: result.financialMetrics.irr > 5 ? '>500%' : formatPercentage(result.financialMetrics.irr * 100),
-      description: result.financialMetrics.irr > result.financialConfig.discountRate
-        ? 'Exceeds hurdle rate'
-        : 'Below hurdle rate'
+      value:
+        result.financialMetrics.irr > 5
+          ? '>500%'
+          : formatPercentage(result.financialMetrics.irr * 100),
+      description:
+        result.financialMetrics.irr > result.financialConfig.discountRate
+          ? 'Exceeds hurdle rate'
+          : 'Below hurdle rate',
     },
     {
       label: 'Total Cost of Ownership',
       value: formatCurrency(result.financialMetrics.tco),
-      description: `${result.financialConfig.analysisYears}-year analysis`
+      description: `${result.financialConfig.analysisYears}-year analysis`,
     },
     {
       label: 'Profitability Index',
       value: `${result.financialMetrics.profitabilityIndex.toFixed(2)}x`,
-      description: result.financialMetrics.profitabilityIndex >= 1 ? 'Value creating' : 'Value destroying'
+      description:
+        result.financialMetrics.profitabilityIndex >= 1 ? 'Value creating' : 'Value destroying',
     },
   ];
 
@@ -180,7 +203,12 @@ export async function generatePDFReport(options: PDFExportOptions): Promise<void
 
   if (result.financialMetrics.discountedPaybackMonths !== Infinity) {
     addText('Discounted Payback', margin, yPos, { fontSize: 10, fontStyle: 'bold' });
-    addText(`${result.financialMetrics.discountedPaybackMonths.toFixed(1)} months`, margin + 80, yPos, { fontSize: 10 });
+    addText(
+      `${result.financialMetrics.discountedPaybackMonths.toFixed(1)} months`,
+      margin + 80,
+      yPos,
+      { fontSize: 10 }
+    );
     yPos += 6;
   }
 
@@ -191,11 +219,14 @@ export async function generatePDFReport(options: PDFExportOptions): Promise<void
   addText(formatCurrency(result.monthlyRecurringSavings), margin + 60, yPos, {
     fontSize: 10,
     fontStyle: 'bold',
-    color: result.monthlyRecurringSavings >= 0 ? [34, 197, 94] : [239, 68, 68]
+    color: result.monthlyRecurringSavings >= 0 ? [34, 197, 94] : [239, 68, 68],
   });
   yPos += 6;
   addText('Total Implementation Cost:', margin, yPos, { fontSize: 10 });
-  addText(formatCurrency(result.totalImplementationCost), margin + 60, yPos, { fontSize: 10, fontStyle: 'bold' });
+  addText(formatCurrency(result.totalImplementationCost), margin + 60, yPos, {
+    fontSize: 10,
+    fontStyle: 'bold',
+  });
   yPos += 10;
 
   // Sensitivity Analysis

@@ -1,6 +1,11 @@
 # Good AI ROI Calculator
 
-An interactive ROI calculator for AI implementations with transparent assumptions and conservative estimates.
+[![CI](https://github.com/GoodAI-Global/roi-calculator/actions/workflows/ci.yml/badge.svg)](https://github.com/GoodAI-Global/roi-calculator/actions/workflows/ci.yml)
+[![Node.js 18+](https://img.shields.io/badge/node-18+-green.svg)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+
+> An interactive ROI calculator for AI implementations with transparent assumptions and conservative estimates.
 
 ## What This Is
 
@@ -23,7 +28,7 @@ An interactive ROI calculator for AI implementations with transparent assumption
 
 ```bash
 # Clone and install (Node.js 18+ required)
-git clone https://github.com/good-ai/roi-calculator.git
+git clone https://github.com/GoodAI-Global/roi-calculator.git
 cd roi-calculator
 npm install
 
@@ -39,11 +44,15 @@ make dev
 ## Available Commands
 
 ```bash
-npm run dev        # Start development server
-npm run build      # Production build
-npm run test       # Run tests
-npm run lint       # Run ESLint
-npm run typecheck  # TypeScript check
+npm run dev          # Start development server
+npm run build        # Production build
+npm run test         # Run tests
+npm run test:coverage # Run tests with coverage
+npm run lint         # Run ESLint
+npm run lint:fix     # Fix ESLint issues
+npm run format       # Format with Prettier
+npm run format:check # Check formatting
+npm run typecheck    # TypeScript check
 ```
 
 ## Project Status

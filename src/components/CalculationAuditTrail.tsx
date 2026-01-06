@@ -31,7 +31,10 @@ function generateManufacturingAuditSteps(
       label: 'Calculate Downtime Reduction %',
       formula: 'Downtime Reduction = OEE Improvement × 2.5 (correlation factor)',
       inputs: [
-        { name: 'Target OEE Improvement', value: formatPercentage(inputs.targetOEEImprovement * 100) },
+        {
+          name: 'Target OEE Improvement',
+          value: formatPercentage(inputs.targetOEEImprovement * 100),
+        },
         { name: 'Correlation Factor', value: '2.5' },
       ],
       result: formatPercentage(downtimeReductionPercent * 100),
@@ -60,8 +63,7 @@ function generateManufacturingAuditSteps(
         { name: 'Monthly Maintenance', value: formatCurrency(inputs.monthlyMaintenanceCost) },
       ],
       result: formatCurrency(result.monthlyRecurringSavings),
-      explanation:
-        'Net savings after subtracting ongoing maintenance and licensing costs.',
+      explanation: 'Net savings after subtracting ongoing maintenance and licensing costs.',
     },
     {
       id: 'step4',
@@ -72,40 +74,47 @@ function generateManufacturingAuditSteps(
         { name: 'Net Monthly Savings', value: formatCurrency(result.monthlyRecurringSavings) },
       ],
       result: `${result.paybackMonths.toFixed(1)} months`,
-      explanation:
-        'Time required to recover the initial investment through monthly savings.',
+      explanation: 'Time required to recover the initial investment through monthly savings.',
     },
     {
       id: 'step5',
       label: 'Calculate First Year ROI',
-      formula: 'Year 1 ROI = ((Savings × Months After Implementation) - Investment) ÷ Investment × 100',
+      formula:
+        'Year 1 ROI = ((Savings × Months After Implementation) - Investment) ÷ Investment × 100',
       inputs: [
-        { name: 'Months After Implementation', value: `${Math.max(0, 12 - inputs.timelineMonths)}` },
+        {
+          name: 'Months After Implementation',
+          value: `${Math.max(0, 12 - inputs.timelineMonths)}`,
+        },
         { name: 'Net Monthly Savings', value: formatCurrency(result.monthlyRecurringSavings) },
         { name: 'Implementation Cost', value: formatCurrency(inputs.implementationCost) },
       ],
       result: formatPercentage(result.firstYearROI),
-      explanation:
-        'Return on investment for Year 1, accounting for the implementation timeline.',
+      explanation: 'Return on investment for Year 1, accounting for the implementation timeline.',
     },
     {
       id: 'step6',
       label: 'Calculate 3-Year Net Value',
       formula: '3-Year Value = (Year 1 Savings) + (24 months × Net Savings) - Investment',
       inputs: [
-        { name: 'Total 3-Year Savings', value: formatCurrency(result.threeYearNetValue + inputs.implementationCost) },
+        {
+          name: 'Total 3-Year Savings',
+          value: formatCurrency(result.threeYearNetValue + inputs.implementationCost),
+        },
         { name: 'Implementation Cost', value: formatCurrency(inputs.implementationCost) },
       ],
       result: formatCurrency(result.threeYearNetValue),
-      explanation:
-        'Total net value generated over 3 years after implementation costs.',
+      explanation: 'Total net value generated over 3 years after implementation costs.',
     },
     {
       id: 'step7',
       label: 'Calculate 5-Year NPV',
       formula: 'NPV = Σ(Cash Flow_t ÷ (1 + r)^t) - Initial Investment',
       inputs: [
-        { name: 'Discount Rate', value: formatPercentage(result.financialConfig.discountRate * 100) },
+        {
+          name: 'Discount Rate',
+          value: formatPercentage(result.financialConfig.discountRate * 100),
+        },
         { name: 'Analysis Period', value: `${result.financialConfig.analysisYears} years` },
         { name: 'Initial Investment', value: formatCurrency(inputs.implementationCost) },
       ],
@@ -116,20 +125,18 @@ function generateManufacturingAuditSteps(
   ];
 }
 
-function generateInsuranceAuditSteps(
-  inputs: InsuranceInputs,
-  result: ROIResult
-): AuditStep[] {
+function generateInsuranceAuditSteps(inputs: InsuranceInputs, result: ROIResult): AuditStep[] {
   const currentAnnualProcessingHours =
     (inputs.annualClaimsVolume * inputs.averageClaimProcessingTimeMinutes) / 60;
-  const processingSavingsPercent = 0.40;
+  const processingSavingsPercent = 0.4;
   const annualHoursSaved = currentAnnualProcessingHours * processingSavingsPercent;
   const annualProcessingSavings = annualHoursSaved * inputs.laborCostPerHour;
   const monthlyProcessingSavings = annualProcessingSavings / 12;
 
   const estimatedFraudulentClaims = inputs.annualClaimsVolume * 0.02;
-  const newFraudDetectionRate = Math.min(0.60, inputs.currentFraudDetectionRate * 2);
-  const additionalFraudCaught = estimatedFraudulentClaims * (newFraudDetectionRate - inputs.currentFraudDetectionRate);
+  const newFraudDetectionRate = Math.min(0.6, inputs.currentFraudDetectionRate * 2);
+  const additionalFraudCaught =
+    estimatedFraudulentClaims * (newFraudDetectionRate - inputs.currentFraudDetectionRate);
   const annualFraudSavings = additionalFraudCaught * inputs.averageFraudClaimValue;
   const monthlyFraudSavings = annualFraudSavings / 12;
 
@@ -151,7 +158,10 @@ function generateInsuranceAuditSteps(
       label: 'Calculate Processing Time Savings',
       formula: 'Savings = Hours × 40% Reduction × Labor Cost',
       inputs: [
-        { name: 'Current Processing Hours', value: `${currentAnnualProcessingHours.toLocaleString()}h` },
+        {
+          name: 'Current Processing Hours',
+          value: `${currentAnnualProcessingHours.toLocaleString()}h`,
+        },
         { name: 'Time Reduction', value: '40% (conservative benchmark)' },
         { name: 'Labor Cost per Hour', value: formatCurrency(inputs.laborCostPerHour) },
       ],
@@ -164,8 +174,14 @@ function generateInsuranceAuditSteps(
       label: 'Calculate Fraud Detection Improvement',
       formula: 'Additional Detection = Fraudulent Claims × (New Rate - Current Rate)',
       inputs: [
-        { name: 'Est. Fraudulent Claims', value: Math.round(estimatedFraudulentClaims).toLocaleString() },
-        { name: 'Current Detection Rate', value: formatPercentage(inputs.currentFraudDetectionRate * 100) },
+        {
+          name: 'Est. Fraudulent Claims',
+          value: Math.round(estimatedFraudulentClaims).toLocaleString(),
+        },
+        {
+          name: 'Current Detection Rate',
+          value: formatPercentage(inputs.currentFraudDetectionRate * 100),
+        },
         { name: 'New Detection Rate', value: formatPercentage(newFraudDetectionRate * 100) },
       ],
       result: `${Math.round(additionalFraudCaught).toLocaleString()} additional claims caught`,
@@ -177,12 +193,17 @@ function generateInsuranceAuditSteps(
       label: 'Calculate Fraud Savings',
       formula: 'Fraud Savings = Additional Claims Caught × Avg Fraud Value',
       inputs: [
-        { name: 'Additional Claims Caught', value: Math.round(additionalFraudCaught).toLocaleString() },
-        { name: 'Avg Fraudulent Claim Value', value: formatCurrency(inputs.averageFraudClaimValue) },
+        {
+          name: 'Additional Claims Caught',
+          value: Math.round(additionalFraudCaught).toLocaleString(),
+        },
+        {
+          name: 'Avg Fraudulent Claim Value',
+          value: formatCurrency(inputs.averageFraudClaimValue),
+        },
       ],
       result: formatCurrency(monthlyFraudSavings) + '/month',
-      explanation:
-        'Value saved by catching additional fraudulent claims.',
+      explanation: 'Value saved by catching additional fraudulent claims.',
     },
     {
       id: 'step5',
@@ -194,8 +215,7 @@ function generateInsuranceAuditSteps(
         { name: 'Monthly Maintenance', value: formatCurrency(inputs.monthlyMaintenanceCost) },
       ],
       result: formatCurrency(result.monthlyRecurringSavings),
-      explanation:
-        'Net monthly savings after all costs.',
+      explanation: 'Net monthly savings after all costs.',
     },
     {
       id: 'step6',
@@ -206,20 +226,21 @@ function generateInsuranceAuditSteps(
         { name: 'Net Monthly Savings', value: formatCurrency(result.monthlyRecurringSavings) },
       ],
       result: `${result.paybackMonths.toFixed(1)} months`,
-      explanation:
-        'Time to recover initial investment.',
+      explanation: 'Time to recover initial investment.',
     },
     {
       id: 'step7',
       label: 'Calculate 5-Year NPV',
       formula: 'NPV = Σ(Cash Flow_t ÷ (1 + r)^t) - Initial Investment',
       inputs: [
-        { name: 'Discount Rate', value: formatPercentage(result.financialConfig.discountRate * 100) },
+        {
+          name: 'Discount Rate',
+          value: formatPercentage(result.financialConfig.discountRate * 100),
+        },
         { name: 'Analysis Period', value: `${result.financialConfig.analysisYears} years` },
       ],
       result: formatCurrency(result.financialMetrics.npv),
-      explanation:
-        'Net Present Value with time value of money adjustment.',
+      explanation: 'Net Present Value with time value of money adjustment.',
     },
   ];
 }
@@ -262,11 +283,23 @@ export default function CalculationAuditTrail({
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between text-left"
         aria-expanded={isExpanded}
-        aria-label={isExpanded ? 'Collapse calculation audit trail' : 'Expand calculation audit trail'}
+        aria-label={
+          isExpanded ? 'Collapse calculation audit trail' : 'Expand calculation audit trail'
+        }
       >
         <h2 className="text-lg font-bold text-gray-800 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-goodai-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          <svg
+            className="w-5 h-5 mr-2 text-goodai-blue"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+            />
           </svg>
           Calculation Audit Trail
         </h2>
@@ -308,10 +341,7 @@ export default function CalculationAuditTrail({
 
           <div className="space-y-3">
             {steps.map((step, index) => (
-              <div
-                key={step.id}
-                className="border border-gray-200 rounded-lg overflow-hidden"
-              >
+              <div key={step.id} className="border border-gray-200 rounded-lg overflow-hidden">
                 <button
                   type="button"
                   onClick={() => toggleStep(step.id)}
@@ -335,7 +365,12 @@ export default function CalculationAuditTrail({
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </div>
                 </button>
@@ -353,7 +388,10 @@ export default function CalculationAuditTrail({
                       <p className="text-sm font-medium text-gray-700 mb-2">Inputs:</p>
                       <div className="grid grid-cols-2 gap-2">
                         {step.inputs.map((input) => (
-                          <div key={input.name} className="flex justify-between text-sm bg-gray-50 p-2 rounded">
+                          <div
+                            key={input.name}
+                            className="flex justify-between text-sm bg-gray-50 p-2 rounded"
+                          >
                             <span className="text-gray-600">{input.name}:</span>
                             <span className="font-medium text-gray-900">{input.value}</span>
                           </div>
@@ -361,9 +399,7 @@ export default function CalculationAuditTrail({
                       </div>
                     </div>
 
-                    <p className="text-sm text-gray-600 italic">
-                      {step.explanation}
-                    </p>
+                    <p className="text-sm text-gray-600 italic">{step.explanation}</p>
                   </div>
                 )}
               </div>
@@ -372,8 +408,9 @@ export default function CalculationAuditTrail({
 
           <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
             <p className="text-xs text-gray-500">
-              <strong>Audit Trail Purpose:</strong> This breakdown ensures full transparency in our ROI calculations.
-              All formulas use conservative, industry-standard assumptions. For detailed methodology, see our benchmark sources.
+              <strong>Audit Trail Purpose:</strong> This breakdown ensures full transparency in our
+              ROI calculations. All formulas use conservative, industry-standard assumptions. For
+              detailed methodology, see our benchmark sources.
             </p>
           </div>
         </div>

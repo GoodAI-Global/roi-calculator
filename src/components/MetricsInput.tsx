@@ -31,11 +31,7 @@ function SliderInput({
   return (
     <div className="mb-4" role="group" aria-labelledby={`${id}-label`}>
       <div className="flex justify-between items-center mb-1">
-        <label
-          id={`${id}-label`}
-          htmlFor={numberId}
-          className="text-sm font-medium text-gray-700"
-        >
+        <label id={`${id}-label`} htmlFor={numberId} className="text-sm font-medium text-gray-700">
           {label}
         </label>
         <div className="flex items-center gap-2">
@@ -190,10 +186,7 @@ interface InsuranceInputFormProps {
 }
 
 function InsuranceInputForm({ inputs, onChange }: InsuranceInputFormProps) {
-  const updateField = <K extends keyof InsuranceInputs>(
-    field: K,
-    value: InsuranceInputs[K]
-  ) => {
+  const updateField = <K extends keyof InsuranceInputs>(field: K, value: InsuranceInputs[K]) => {
     onChange({ ...inputs, [field]: value });
   };
 
@@ -308,22 +301,18 @@ export default function MetricsInput({
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-        <span className="w-8 h-8 bg-goodai-teal text-white rounded-full flex items-center justify-center text-sm mr-3">1</span>
+        <span className="w-8 h-8 bg-goodai-teal text-white rounded-full flex items-center justify-center text-sm mr-3">
+          1
+        </span>
         Input Your Metrics
       </h2>
 
       {industry === 'manufacturing' && (
-        <ManufacturingInputForm
-          inputs={manufacturingInputs}
-          onChange={onManufacturingChange}
-        />
+        <ManufacturingInputForm inputs={manufacturingInputs} onChange={onManufacturingChange} />
       )}
 
       {industry === 'insurance' && (
-        <InsuranceInputForm
-          inputs={insuranceInputs}
-          onChange={onInsuranceChange}
-        />
+        <InsuranceInputForm inputs={insuranceInputs} onChange={onInsuranceChange} />
       )}
     </div>
   );

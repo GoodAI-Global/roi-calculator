@@ -13,27 +13,27 @@ describe('Financial Calculations', () => {
   describe('calculateNPV', () => {
     it('should return negative initial investment for zero cash flows', () => {
       const cashFlows = Array(60).fill(0);
-      const npv = calculateNPV(100000, cashFlows, 0.10);
+      const npv = calculateNPV(100000, cashFlows, 0.1);
       expect(npv).toBe(-100000);
     });
 
     it('should calculate positive NPV for profitable investment', () => {
       // $100k investment, $5k monthly savings for 60 months at 10% discount
       const cashFlows = Array(60).fill(5000);
-      const npv = calculateNPV(100000, cashFlows, 0.10);
+      const npv = calculateNPV(100000, cashFlows, 0.1);
       expect(npv).toBeGreaterThan(100000); // Should be well profitable
     });
 
     it('should return higher NPV with lower discount rate', () => {
       const cashFlows = Array(60).fill(3000);
-      const npv10 = calculateNPV(100000, cashFlows, 0.10);
+      const npv10 = calculateNPV(100000, cashFlows, 0.1);
       const npv05 = calculateNPV(100000, cashFlows, 0.05);
       expect(npv05).toBeGreaterThan(npv10);
     });
 
     it('should return negative NPV for unprofitable investment', () => {
       const cashFlows = Array(60).fill(500); // Only $500/month
-      const npv = calculateNPV(100000, cashFlows, 0.10);
+      const npv = calculateNPV(100000, cashFlows, 0.1);
       expect(npv).toBeLessThan(0);
     });
 
@@ -101,14 +101,14 @@ describe('Financial Calculations', () => {
     it('should return payback period in months', () => {
       // $100k investment, $10k monthly savings
       const cashFlows = Array(60).fill(10000);
-      const payback = calculateDiscountedPayback(100000, cashFlows, 0.10);
+      const payback = calculateDiscountedPayback(100000, cashFlows, 0.1);
       expect(payback).toBeGreaterThan(10); // More than 10 months due to discounting
       expect(payback).toBeLessThan(15); // But less than 15
     });
 
     it('should return Infinity when payback not achieved', () => {
       const cashFlows = Array(60).fill(100); // Too low
-      const payback = calculateDiscountedPayback(100000, cashFlows, 0.10);
+      const payback = calculateDiscountedPayback(100000, cashFlows, 0.1);
       expect(payback).toBe(Infinity);
     });
 
@@ -121,7 +121,7 @@ describe('Financial Calculations', () => {
 
     it('should return 0 when no investment required', () => {
       const cashFlows = Array(60).fill(5000);
-      const payback = calculateDiscountedPayback(0, cashFlows, 0.10);
+      const payback = calculateDiscountedPayback(0, cashFlows, 0.1);
       expect(payback).toBeLessThan(1); // Immediate payback
     });
   });
@@ -204,13 +204,7 @@ describe('Financial Calculations', () => {
     });
 
     it('should handle zero implementation cost', () => {
-      const metrics = calculateEnhancedFinancialMetrics(
-        0,
-        10000,
-        1000,
-        1,
-        defaultFinancialConfig
-      );
+      const metrics = calculateEnhancedFinancialMetrics(0, 10000, 1000, 1, defaultFinancialConfig);
 
       // TCO still includes maintenance costs over 5 years
       expect(metrics.tco).toBeGreaterThan(0);
@@ -219,13 +213,11 @@ describe('Financial Calculations', () => {
     });
 
     it('should calculate TCO correctly', () => {
-      const metrics = calculateEnhancedFinancialMetrics(
-        100000,
-        50000,
-        1000,
-        6,
-        { discountRate: 0.10, analysisYears: 5, inflationRate: 0 }
-      );
+      const metrics = calculateEnhancedFinancialMetrics(100000, 50000, 1000, 6, {
+        discountRate: 0.1,
+        analysisYears: 5,
+        inflationRate: 0,
+      });
 
       // TCO should be initial + 5 years of maintenance
       expect(metrics.tco).toBeCloseTo(100000 + 1000 * 12 * 5, -2);
@@ -251,13 +243,7 @@ describe('Financial Calculations', () => {
         inflationRate: 0.05,
       };
 
-      const metrics = calculateEnhancedFinancialMetrics(
-        150000,
-        50000,
-        2000,
-        6,
-        conservativeConfig
-      );
+      const metrics = calculateEnhancedFinancialMetrics(150000, 50000, 2000, 6, conservativeConfig);
 
       expect(metrics.tco).toBeDefined();
       expect(metrics.npv).toBeDefined();

@@ -36,7 +36,12 @@ function ChartError() {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex items-center gap-2 mb-4">
-        <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="w-5 h-5 text-amber-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -47,8 +52,8 @@ function ChartError() {
         <h3 className="text-lg font-bold text-gray-800">Sensitivity Chart Unavailable</h3>
       </div>
       <p className="text-gray-600 text-sm">
-        The sensitivity analysis chart could not be rendered. Your ROI calculations above are still accurate.
-        Try refreshing the page if you need to view the chart.
+        The sensitivity analysis chart could not be rendered. Your ROI calculations above are still
+        accurate. Try refreshing the page if you need to view the chart.
       </p>
     </div>
   );
@@ -60,7 +65,8 @@ interface CalculatorProps {
 }
 
 export default function Calculator({ selectedIndustry, onIndustryChange }: CalculatorProps) {
-  const [manufacturingInputs, setManufacturingInputs] = useState<ManufacturingInputs>(manufacturingDefaults);
+  const [manufacturingInputs, setManufacturingInputs] =
+    useState<ManufacturingInputs>(manufacturingDefaults);
   const [insuranceInputs, setInsuranceInputs] = useState<InsuranceInputs>(insuranceDefaults);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>('idle');
   const [pdfStatus, setPdfStatus] = useState<'idle' | 'generating' | 'done' | 'error'>('idle');
@@ -76,7 +82,9 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
       case 'aquaculture':
         // These industries are not yet implemented (disabled in UI)
         // Fall back to manufacturing with a console warning for debugging
-        console.warn(`Industry "${selectedIndustry}" is not yet implemented. Using manufacturing calculator.`);
+        console.warn(
+          `Industry "${selectedIndustry}" is not yet implemented. Using manufacturing calculator.`
+        );
         return calculateManufacturingROI(manufacturingInputs);
       default: {
         // Exhaustive check - TypeScript will error if a new Industry is added without handling
@@ -105,7 +113,8 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
       sensitivityAnalysis: result.sensitivityAnalysis,
       assumptions: result.assumptions,
       caveats: result.caveats,
-      disclaimer: 'These calculations are estimates based on industry benchmarks. Actual results may vary significantly based on implementation quality, data availability, and organizational factors.',
+      disclaimer:
+        'These calculations are estimates based on industry benchmarks. Actual results may vary significantly based on implementation quality, data availability, and organizational factors.',
     };
 
     const success = await copyToClipboard(JSON.stringify(exportData, null, 2));
@@ -126,9 +135,7 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
   const handleExportPDF = async () => {
     setPdfStatus('generating');
     try {
-      const inputs = selectedIndustry === 'manufacturing'
-        ? manufacturingInputs
-        : insuranceInputs;
+      const inputs = selectedIndustry === 'manufacturing' ? manufacturingInputs : insuranceInputs;
 
       await generatePDFReport({
         industry: selectedIndustry,
@@ -146,10 +153,7 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
 
   return (
     <div>
-      <IndustrySelector
-        selectedIndustry={selectedIndustry}
-        onSelect={onIndustryChange}
-      />
+      <IndustrySelector selectedIndustry={selectedIndustry} onSelect={onIndustryChange} />
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Left Column - Inputs */}
@@ -183,32 +187,48 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
               aria-live="polite"
               className={`
                 px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2
-                ${copyStatus === 'copied'
-                  ? 'bg-green-500 text-white'
-                  : copyStatus === 'error'
-                    ? 'bg-red-500 text-white'
-                    : 'bg-goodai-black text-white hover:bg-gray-800'
+                ${
+                  copyStatus === 'copied'
+                    ? 'bg-green-500 text-white'
+                    : copyStatus === 'error'
+                      ? 'bg-red-500 text-white'
+                      : 'bg-goodai-black text-white hover:bg-gray-800'
                 }
               `}
             >
               {copyStatus === 'copied' ? (
                 <>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                   Copied!
                 </>
               ) : copyStatus === 'error' ? (
                 <>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                   Error
                 </>
               ) : (
                 <>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                    />
                   </svg>
                   Copy as JSON
                 </>
@@ -229,42 +249,69 @@ export default function Calculator({ selectedIndustry, onIndustryChange }: Calcu
               aria-live="polite"
               className={`
                 px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2
-                ${pdfStatus === 'generating'
-                  ? 'bg-gray-400 text-white cursor-wait'
-                  : pdfStatus === 'done'
-                    ? 'bg-green-500 text-white'
-                    : pdfStatus === 'error'
-                      ? 'bg-red-500 text-white'
-                      : 'bg-goodai-blue text-white hover:bg-blue-600'
+                ${
+                  pdfStatus === 'generating'
+                    ? 'bg-gray-400 text-white cursor-wait'
+                    : pdfStatus === 'done'
+                      ? 'bg-green-500 text-white'
+                      : pdfStatus === 'error'
+                        ? 'bg-red-500 text-white'
+                        : 'bg-goodai-blue text-white hover:bg-blue-600'
                 }
               `}
             >
               {pdfStatus === 'generating' ? (
                 <>
                   <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   Generating...
                 </>
               ) : pdfStatus === 'done' ? (
                 <>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                   Downloaded!
                 </>
               ) : pdfStatus === 'error' ? (
                 <>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                   Error
                 </>
               ) : (
                 <>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
                   Export PDF
                 </>

@@ -24,7 +24,7 @@ export interface Citation {
 export const benchmarkCitations: Record<string, Citation> = {
   mckinsey2023: {
     id: 'mckinsey2023',
-    title: 'The State of AI in 2023: Generative AI\'s Breakout Year',
+    title: "The State of AI in 2023: Generative AI's Breakout Year",
     source: 'McKinsey Global Institute',
     year: 2023,
     url: 'https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-in-2023',
@@ -211,12 +211,7 @@ export const industryBenchmarks: Record<string, IndustryBenchmark> = {
       median: 500000,
       high: 2000000,
     },
-    keyMetrics: [
-      'Diagnostic Accuracy',
-      'Length of Stay',
-      'Readmission Rates',
-      'Staff Efficiency',
-    ],
+    keyMetrics: ['Diagnostic Accuracy', 'Length of Stay', 'Readmission Rates', 'Staff Efficiency'],
     sources: [
       {
         citationId: 'mckinsey2023',
@@ -245,12 +240,7 @@ export const industryBenchmarks: Record<string, IndustryBenchmark> = {
       median: 120000,
       high: 350000,
     },
-    keyMetrics: [
-      'Feed Conversion Ratio',
-      'Mortality Rate',
-      'Growth Rate',
-      'Water Quality Metrics',
-    ],
+    keyMetrics: ['Feed Conversion Ratio', 'Mortality Rate', 'Growth Rate', 'Water Quality Metrics'],
     sources: [
       {
         citationId: 'deloitte2023',
@@ -267,9 +257,9 @@ export const industryBenchmarks: Record<string, IndustryBenchmark> = {
  */
 export const oeeImprovementBenchmarks = {
   conservative: 0.05, // 5 percentage points
-  median: 0.10,       // 10 percentage points
-  optimistic: 0.15,   // 15 percentage points
-  worldClass: 0.20,   // 20 percentage points (rare)
+  median: 0.1, // 10 percentage points
+  optimistic: 0.15, // 15 percentage points
+  worldClass: 0.2, // 20 percentage points (rare)
 };
 
 /**

@@ -74,14 +74,25 @@ export default function ScenarioComparison({
       <div className="bg-white rounded-lg shadow-md p-6 mt-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-800 flex items-center">
-            <svg className="w-5 h-5 mr-2 text-goodai-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            <svg
+              className="w-5 h-5 mr-2 text-goodai-blue"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              />
             </svg>
             Scenario Comparison
           </h2>
         </div>
         <p className="text-gray-600 mb-4">
-          Save the current calculation as a scenario to compare different configurations side by side.
+          Save the current calculation as a scenario to compare different configurations side by
+          side.
         </p>
         <button
           type="button"
@@ -101,13 +112,21 @@ export default function ScenarioComparison({
     <div className="bg-white rounded-lg shadow-md p-6 mt-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-gray-800 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-goodai-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          <svg
+            className="w-5 h-5 mr-2 text-goodai-blue"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
           </svg>
           Scenario Comparison
-          <span className="ml-2 text-sm font-normal text-gray-500">
-            ({scenarios.length} saved)
-          </span>
+          <span className="ml-2 text-sm font-normal text-gray-500">({scenarios.length} saved)</span>
         </h2>
         <div className="flex gap-2">
           <button
@@ -116,7 +135,12 @@ export default function ScenarioComparison({
             className="px-3 py-1.5 text-sm bg-goodai-teal text-white rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-1"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
             </svg>
             Save Current
           </button>
@@ -189,8 +213,18 @@ export default function ScenarioComparison({
                         className="text-gray-400 hover:text-red-500 ml-1"
                         aria-label={`Delete ${scenario.name}`}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
                         </svg>
                       </button>
                     </div>
@@ -219,7 +253,11 @@ export default function ScenarioComparison({
                   >
                     {formatDuration(scenario.result.paybackMonths)}
                     <span className="ml-1 text-xs">
-                      {getDiffIndicator(currentResult.paybackMonths, scenario.result.paybackMonths, false)}
+                      {getDiffIndicator(
+                        currentResult.paybackMonths,
+                        scenario.result.paybackMonths,
+                        false
+                      )}
                     </span>
                   </td>
                 ))}
@@ -242,7 +280,11 @@ export default function ScenarioComparison({
                   >
                     {formatPercentage(scenario.result.threeYearROI)}
                     <span className="ml-1 text-xs">
-                      {getDiffIndicator(currentResult.threeYearROI, scenario.result.threeYearROI, true)}
+                      {getDiffIndicator(
+                        currentResult.threeYearROI,
+                        scenario.result.threeYearROI,
+                        true
+                      )}
                     </span>
                   </td>
                 ))}
@@ -265,7 +307,11 @@ export default function ScenarioComparison({
                   >
                     {formatCurrency(scenario.result.threeYearNetValue)}
                     <span className="ml-1 text-xs">
-                      {getDiffIndicator(currentResult.threeYearNetValue, scenario.result.threeYearNetValue, true)}
+                      {getDiffIndicator(
+                        currentResult.threeYearNetValue,
+                        scenario.result.threeYearNetValue,
+                        true
+                      )}
                     </span>
                   </td>
                 ))}
@@ -288,7 +334,11 @@ export default function ScenarioComparison({
                   >
                     {formatCurrency(scenario.result.financialMetrics.npv)}
                     <span className="ml-1 text-xs">
-                      {getDiffIndicator(currentResult.financialMetrics.npv, scenario.result.financialMetrics.npv, true)}
+                      {getDiffIndicator(
+                        currentResult.financialMetrics.npv,
+                        scenario.result.financialMetrics.npv,
+                        true
+                      )}
                     </span>
                   </td>
                 ))}
@@ -315,7 +365,11 @@ export default function ScenarioComparison({
                       ? '>500%'
                       : formatPercentage(scenario.result.financialMetrics.irr * 100)}
                     <span className="ml-1 text-xs">
-                      {getDiffIndicator(currentResult.financialMetrics.irr, scenario.result.financialMetrics.irr, true)}
+                      {getDiffIndicator(
+                        currentResult.financialMetrics.irr,
+                        scenario.result.financialMetrics.irr,
+                        true
+                      )}
                     </span>
                   </td>
                 ))}
@@ -365,7 +419,11 @@ export default function ScenarioComparison({
                   >
                     {formatCurrency(scenario.result.financialMetrics.tco)}
                     <span className="ml-1 text-xs">
-                      {getDiffIndicator(currentResult.financialMetrics.tco, scenario.result.financialMetrics.tco, false)}
+                      {getDiffIndicator(
+                        currentResult.financialMetrics.tco,
+                        scenario.result.financialMetrics.tco,
+                        false
+                      )}
                     </span>
                   </td>
                 ))}
@@ -419,7 +477,11 @@ export default function ScenarioComparison({
         <div className="text-sm text-gray-600">
           <p>
             {scenarios.length} scenario{scenarios.length !== 1 ? 's' : ''} saved.{' '}
-            <button type="button" onClick={() => setIsExpanded(true)} className="text-goodai-teal hover:underline">
+            <button
+              type="button"
+              onClick={() => setIsExpanded(true)}
+              className="text-goodai-teal hover:underline"
+            >
               Expand to compare
             </button>
           </p>

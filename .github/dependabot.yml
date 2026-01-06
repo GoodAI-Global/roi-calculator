@@ -1,32 +1,33 @@
 version: 2
 updates:
-  # npm dependencies
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 10
-    groups:
-      # Group minor and patch updates
-      npm-minor-patch:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "deps"
     labels:
       - "dependencies"
+    open-pull-requests-limit: 5
+    groups:
+      dev-dependencies:
+        patterns:
+          - "@types/*"
+          - "eslint*"
+          - "prettier*"
+          - "typescript"
+          - "vitest"
+          - "@vitejs/*"
+          - "vite"
+          - "tailwindcss"
+          - "autoprefixer"
+          - "postcss"
 
-  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
     commit-message:
-      prefix: "chore(ci)"
+      prefix: "ci"
     labels:
       - "ci"

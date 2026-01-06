@@ -19,11 +19,7 @@ export default function IndustrySelector({ selectedIndustry, onSelect }: Industr
       <p id="industry-label" className="block text-sm font-medium text-gray-700 mb-2">
         Select Industry
       </p>
-      <div
-        className="flex flex-wrap gap-2"
-        role="tablist"
-        aria-labelledby="industry-label"
-      >
+      <div className="flex flex-wrap gap-2" role="tablist" aria-labelledby="industry-label">
         {industries.map((industry) => (
           <button
             key={industry.id}
@@ -34,11 +30,12 @@ export default function IndustrySelector({ selectedIndustry, onSelect }: Industr
             disabled={!industry.enabled}
             className={`
               px-4 py-2 rounded-lg text-sm font-medium transition-all
-              ${selectedIndustry === industry.id
-                ? 'bg-goodai-teal text-white shadow-md'
-                : industry.enabled
-                  ? 'bg-white text-gray-700 border border-gray-300 hover:border-goodai-teal hover:text-goodai-teal'
-                  : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
+              ${
+                selectedIndustry === industry.id
+                  ? 'bg-goodai-teal text-white shadow-md'
+                  : industry.enabled
+                    ? 'bg-white text-gray-700 border border-gray-300 hover:border-goodai-teal hover:text-goodai-teal'
+                    : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
               }
             `}
           >
