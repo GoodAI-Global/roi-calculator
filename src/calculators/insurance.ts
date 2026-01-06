@@ -5,10 +5,24 @@ import { calculateEnhancedFinancialMetrics } from '../utils/financial';
 /**
  * Insurance ROI Calculator
  *
- * Key assumptions:
+ * Calculates return on investment for AI-driven insurance automation,
+ * focusing on claims processing efficiency and fraud detection improvement.
+ *
+ * @see {@link file://../MODEL.md#insurance-roi-model} for complete formula documentation
+ * @see {@link file://../__fixtures__/roi_scenarios.json} for test scenarios
+ *
+ * ## Core Formulas
+ * - Claims: `annualHoursSaved = (claims × minutes / 60) × 0.40`
+ * - Fraud: `additionalFraudCaught = fraudulentClaims × (newRate - currentRate)`
+ * - `newFraudDetectionRate = min(0.60, currentRate × 2)`
+ *
+ * ## Key Assumptions
  * - AI can reduce claims processing time by 40% (conservative benchmark)
- * - AI fraud detection improves detection rate by 2x (conservative)
+ * - AI fraud detection improves detection rate by 2x, capped at 60%
+ * - 2% of claims are fraudulent (industry average)
  * - Labor savings calculated based on time reduction
+ *
+ * @module calculators/insurance
  */
 
 export function calculateInsuranceROI(inputs: InsuranceInputs): ROIResult {

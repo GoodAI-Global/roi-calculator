@@ -5,10 +5,23 @@ import { calculateEnhancedFinancialMetrics } from '../utils/financial';
 /**
  * Manufacturing ROI Calculator
  *
- * Key assumptions:
- * - OEE improvement correlates with downtime reduction at 2.5x factor (conservative)
+ * Calculates return on investment for AI-driven manufacturing optimization,
+ * focusing on OEE improvement and unplanned downtime reduction.
+ *
+ * @see {@link file://../MODEL.md#manufacturing-roi-model} for complete formula documentation
+ * @see {@link file://../__fixtures__/roi_scenarios.json} for test scenarios
+ *
+ * ## Core Formulas
+ * - `downtimeReductionPercent = targetOEEImprovement × 2.5`
+ * - `monthlyRecurringSavings = (downtimeHours × reduction × costPerHour) - maintenanceCost`
+ * - `paybackMonths = implementationCost / monthlyRecurringSavings`
+ *
+ * ## Key Assumptions
+ * - OEE improvement correlates with downtime reduction at 2.5x factor (industry median)
  * - Savings begin after implementation timeline completes
  * - No additional capital equipment required
+ *
+ * @module calculators/manufacturing
  */
 
 export function calculateManufacturingROI(inputs: ManufacturingInputs): ROIResult {

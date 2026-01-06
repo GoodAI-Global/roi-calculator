@@ -5,6 +5,18 @@ import {
 } from '../calculators/types';
 
 /**
+ * Financial Metrics Utilities
+ *
+ * Enterprise-grade financial calculations for ROI analysis including
+ * NPV, IRR, TCO, and discounted payback period.
+ *
+ * @see {@link file://../MODEL.md#financial-metrics} for complete formula documentation
+ * @see {@link file://../__fixtures__/roi_scenarios.json} for test scenarios
+ *
+ * @module utils/financial
+ */
+
+/**
  * Calculate Net Present Value (NPV)
  * NPV = Σ (Cash Flow_t / (1 + r)^t) - Initial Investment
  *

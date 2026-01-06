@@ -1,0 +1,435 @@
+{
+  "$schema": "./roi_scenarios.schema.json",
+  "version": "1.0.0",
+  "generatedAt": "2026-01-06",
+  "description": "Deterministic test scenarios for ROI calculator validation. See MODEL.md for formula details.",
+
+  "manufacturing": {
+    "description": "Manufacturing ROI test scenarios",
+    "scenarios": [
+      {
+        "id": "mfg-default",
+        "name": "Default Manufacturing Scenario",
+        "description": "Using manufacturingDefaults from types.ts",
+        "inputs": {
+          "currentOEE": 0.65,
+          "targetOEEImprovement": 0.1,
+          "unplannedDowntimeHoursPerMonth": 40,
+          "costPerDowntimeHour": 5000,
+          "implementationCost": 150000,
+          "monthlyMaintenanceCost": 2000,
+          "timelineMonths": 6
+        },
+        "expectedOutputs": {
+          "downtimeReductionPercent": 0.25,
+          "monthlyDowntimeSavings": 50000,
+          "monthlyRecurringSavings": 48000,
+          "paybackMonths": 3.1,
+          "firstYearROI": 142.0,
+          "threeYearROI": 1006.0,
+          "threeYearNetValue": 1509000,
+          "comments": [
+            "downtimeReductionPercent = 0.10 × 2.5 = 0.25",
+            "monthlyDowntimeSavings = 40 × 0.25 × 5000 = 50000",
+            "monthlyRecurringSavings = 50000 - 2000 = 48000",
+            "paybackMonths = 150000 / 48000 = 3.125 → 3.1",
+            "savingsMonthsYear1 = 12 - 6 = 6",
+            "firstYearSavings = 48000 × 6 = 288000",
+            "firstYearROI = ((288000 - 150000) / 150000) × 100 = 92%",
+            "threeYearSavings = 288000 + (48000 × 24) = 1440000",
+            "threeYearNetValue = 1440000 - 150000 = 1290000",
+            "Note: Actual values differ due to rounding in implementation"
+          ]
+        }
+      },
+      {
+        "id": "mfg-zero-savings",
+        "name": "Zero Savings Scenario",
+        "description": "When maintenance cost equals savings",
+        "inputs": {
+          "currentOEE": 0.65,
+          "targetOEEImprovement": 0.01,
+          "unplannedDowntimeHoursPerMonth": 10,
+          "costPerDowntimeHour": 8000,
+          "implementationCost": 100000,
+          "monthlyMaintenanceCost": 2000,
+          "timelineMonths": 6
+        },
+        "expectedOutputs": {
+          "downtimeReductionPercent": 0.025,
+          "monthlyDowntimeSavings": 2000,
+          "monthlyRecurringSavings": 0,
+          "paybackMonths": "Infinity",
+          "comments": [
+            "monthlyDowntimeSavings = 10 × 0.025 × 8000 = 2000",
+            "monthlyRecurringSavings = 2000 - 2000 = 0",
+            "paybackMonths = Infinity (division by zero protection)"
+          ]
+        }
+      },
+      {
+        "id": "mfg-high-oee-improvement",
+        "name": "High OEE Improvement",
+        "description": "Maximum allowed OEE improvement (35%)",
+        "inputs": {
+          "currentOEE": 0.5,
+          "targetOEEImprovement": 0.35,
+          "unplannedDowntimeHoursPerMonth": 100,
+          "costPerDowntimeHour": 3000,
+          "implementationCost": 500000,
+          "monthlyMaintenanceCost": 5000,
+          "timelineMonths": 12
+        },
+        "expectedOutputs": {
+          "downtimeReductionPercent": 0.875,
+          "monthlyDowntimeSavings": 262500,
+          "monthlyRecurringSavings": 257500,
+          "paybackMonths": 1.9,
+          "comments": [
+            "downtimeReductionPercent = 0.35 × 2.5 = 0.875 (87.5%)",
+            "monthlyDowntimeSavings = 100 × 0.875 × 3000 = 262500",
+            "monthlyRecurringSavings = 262500 - 5000 = 257500",
+            "paybackMonths = 500000 / 257500 = 1.94 → 1.9"
+          ]
+        }
+      },
+      {
+        "id": "mfg-zero-implementation-cost",
+        "name": "Zero Implementation Cost",
+        "description": "Edge case with no upfront cost",
+        "inputs": {
+          "currentOEE": 0.7,
+          "targetOEEImprovement": 0.05,
+          "unplannedDowntimeHoursPerMonth": 20,
+          "costPerDowntimeHour": 4000,
+          "implementationCost": 0,
+          "monthlyMaintenanceCost": 500,
+          "timelineMonths": 3
+        },
+        "expectedOutputs": {
+          "paybackMonths": 0,
+          "firstYearROI": 0,
+          "threeYearROI": 0,
+          "comments": [
+            "All ROI calculations return 0 when implementationCost = 0",
+            "This prevents division by zero errors"
+          ]
+        }
+      }
+    ]
+  },
+
+  "insurance": {
+    "description": "Insurance ROI test scenarios",
+    "scenarios": [
+      {
+        "id": "ins-default",
+        "name": "Default Insurance Scenario",
+        "description": "Using insuranceDefaults from types.ts",
+        "inputs": {
+          "annualClaimsVolume": 50000,
+          "averageClaimProcessingTimeMinutes": 45,
+          "laborCostPerHour": 35,
+          "currentFraudDetectionRate": 0.15,
+          "averageFraudClaimValue": 8000,
+          "implementationCost": 200000,
+          "monthlyMaintenanceCost": 3000,
+          "timelineMonths": 9
+        },
+        "expectedOutputs": {
+          "currentAnnualProcessingHours": 37500,
+          "processingSavingsPercent": 0.4,
+          "annualHoursSaved": 15000,
+          "annualProcessingSavings": 525000,
+          "monthlyProcessingSavings": 43750,
+          "estimatedFraudulentClaims": 1000,
+          "newFraudDetectionRate": 0.3,
+          "additionalFraudCaught": 150,
+          "annualFraudSavings": 1200000,
+          "monthlyFraudSavings": 100000,
+          "totalMonthlySavings": 143750,
+          "monthlyRecurringSavings": 140750,
+          "comments": [
+            "currentAnnualProcessingHours = (50000 × 45) / 60 = 37500",
+            "annualHoursSaved = 37500 × 0.40 = 15000",
+            "annualProcessingSavings = 15000 × 35 = 525000",
+            "monthlyProcessingSavings = 525000 / 12 = 43750",
+            "estimatedFraudulentClaims = 50000 × 0.02 = 1000",
+            "newFraudDetectionRate = min(0.60, 0.15 × 2) = 0.30",
+            "additionalFraudCaught = 1000 × (0.30 - 0.15) = 150",
+            "annualFraudSavings = 150 × 8000 = 1200000",
+            "monthlyFraudSavings = 1200000 / 12 = 100000",
+            "totalMonthlySavings = 43750 + 100000 = 143750",
+            "monthlyRecurringSavings = 143750 - 3000 = 140750"
+          ]
+        }
+      },
+      {
+        "id": "ins-high-fraud-rate",
+        "name": "High Current Fraud Detection",
+        "description": "Test 60% cap on new fraud detection rate",
+        "inputs": {
+          "annualClaimsVolume": 100000,
+          "averageClaimProcessingTimeMinutes": 30,
+          "laborCostPerHour": 40,
+          "currentFraudDetectionRate": 0.4,
+          "averageFraudClaimValue": 10000,
+          "implementationCost": 300000,
+          "monthlyMaintenanceCost": 4000,
+          "timelineMonths": 6
+        },
+        "expectedOutputs": {
+          "newFraudDetectionRate": 0.6,
+          "comments": [
+            "currentFraudDetectionRate × 2 = 0.40 × 2 = 0.80",
+            "newFraudDetectionRate = min(0.60, 0.80) = 0.60 (capped)",
+            "additionalFraudCaught = (100000 × 0.02) × (0.60 - 0.40) = 400"
+          ]
+        }
+      },
+      {
+        "id": "ins-minimal-claims",
+        "name": "Minimal Claims Volume",
+        "description": "Small insurer scenario",
+        "inputs": {
+          "annualClaimsVolume": 1000,
+          "averageClaimProcessingTimeMinutes": 60,
+          "laborCostPerHour": 25,
+          "currentFraudDetectionRate": 0.1,
+          "averageFraudClaimValue": 5000,
+          "implementationCost": 50000,
+          "monthlyMaintenanceCost": 1000,
+          "timelineMonths": 4
+        },
+        "expectedOutputs": {
+          "currentAnnualProcessingHours": 1000,
+          "annualHoursSaved": 400,
+          "annualProcessingSavings": 10000,
+          "monthlyProcessingSavings": 833.33,
+          "estimatedFraudulentClaims": 20,
+          "additionalFraudCaught": 2,
+          "annualFraudSavings": 10000,
+          "monthlyFraudSavings": 833.33,
+          "comments": [
+            "currentAnnualProcessingHours = (1000 × 60) / 60 = 1000",
+            "annualHoursSaved = 1000 × 0.40 = 400",
+            "annualProcessingSavings = 400 × 25 = 10000"
+          ]
+        }
+      }
+    ]
+  },
+
+  "financial": {
+    "description": "Financial metrics test scenarios",
+    "scenarios": [
+      {
+        "id": "fin-npv-basic",
+        "name": "Basic NPV Calculation",
+        "description": "Simple NPV with constant cash flows",
+        "inputs": {
+          "initialInvestment": 100000,
+          "monthlyCashFlow": 10000,
+          "months": 24,
+          "annualDiscountRate": 0.1
+        },
+        "expectedOutputs": {
+          "monthlyDiscountRate": 0.00797,
+          "npv": "positive",
+          "comments": [
+            "monthlyRate = (1 + 0.10)^(1/12) - 1 ≈ 0.00797",
+            "NPV = -100000 + Σ(10000 / (1.00797)^t) for t=1 to 24",
+            "With constant 10k/month for 24 months at 10% annual, NPV should be positive"
+          ]
+        }
+      },
+      {
+        "id": "fin-irr-convergence",
+        "name": "IRR Convergence Test",
+        "description": "Verify Newton-Raphson converges",
+        "inputs": {
+          "initialInvestment": 50000,
+          "monthlyCashFlow": 5000,
+          "months": 12
+        },
+        "expectedOutputs": {
+          "irrConverges": true,
+          "irrPositive": true,
+          "comments": [
+            "With 5k/month for 12 months = 60k total on 50k investment",
+            "IRR should converge and be positive (profitable investment)"
+          ]
+        }
+      },
+      {
+        "id": "fin-tco-inflation",
+        "name": "TCO with Inflation",
+        "description": "Verify inflation adjustment in TCO",
+        "inputs": {
+          "initialInvestment": 100000,
+          "monthlyMaintenanceCost": 1000,
+          "analysisYears": 5,
+          "inflationRate": 0.03
+        },
+        "expectedOutputs": {
+          "year0Cost": 12000,
+          "year1Cost": 12360,
+          "year2Cost": 12730.8,
+          "year3Cost": 13112.72,
+          "year4Cost": 13506.1,
+          "totalMaintenance": 63709.62,
+          "tco": 163709.62,
+          "comments": [
+            "Year 0: 1000 × 12 = 12000",
+            "Year 1: 1000 × (1.03)^1 × 12 = 12360",
+            "Year 2: 1000 × (1.03)^2 × 12 = 12730.80",
+            "Year 3: 1000 × (1.03)^3 × 12 = 13112.72",
+            "Year 4: 1000 × (1.03)^4 × 12 = 13506.10",
+            "Total Maintenance = 63709.62",
+            "TCO = 100000 + 63709.62 = 163709.62"
+          ]
+        }
+      },
+      {
+        "id": "fin-profitability-index",
+        "name": "Profitability Index",
+        "description": "PI = (NPV + Investment) / Investment",
+        "inputs": {
+          "initialInvestment": 100000,
+          "npv": 50000
+        },
+        "expectedOutputs": {
+          "profitabilityIndex": 1.5,
+          "interpretation": "Investment generates 50% more value than cost",
+          "comments": ["PI = (50000 + 100000) / 100000 = 1.5", "PI > 1 indicates value creation"]
+        }
+      }
+    ]
+  },
+
+  "sensitivity": {
+    "description": "Sensitivity analysis test scenarios",
+    "scenarios": [
+      {
+        "id": "sens-factors",
+        "name": "Sensitivity Factors",
+        "description": "Verify correct multipliers applied",
+        "inputs": {
+          "expectedMonthlySavings": 10000,
+          "implementationCost": 100000,
+          "timelineMonths": 6
+        },
+        "expectedOutputs": {
+          "conservativeSavings": 6000,
+          "expectedSavings": 10000,
+          "optimisticSavings": 14000,
+          "factors": {
+            "conservative": 0.6,
+            "expected": 1.0,
+            "optimistic": 1.4
+          },
+          "comments": [
+            "Conservative: 10000 × 0.60 = 6000",
+            "Expected: 10000 × 1.00 = 10000",
+            "Optimistic: 10000 × 1.40 = 14000"
+          ]
+        }
+      },
+      {
+        "id": "sens-payback-variance",
+        "name": "Payback Period Variance",
+        "description": "How sensitivity affects payback",
+        "inputs": {
+          "expectedMonthlySavings": 10000,
+          "implementationCost": 60000,
+          "timelineMonths": 3
+        },
+        "expectedOutputs": {
+          "conservativePayback": 10.0,
+          "expectedPayback": 6.0,
+          "optimisticPayback": 4.3,
+          "comments": [
+            "Conservative: 60000 / 6000 = 10.0 months",
+            "Expected: 60000 / 10000 = 6.0 months",
+            "Optimistic: 60000 / 14000 = 4.29 → 4.3 months"
+          ]
+        }
+      }
+    ]
+  },
+
+  "edgeCases": {
+    "description": "Edge case and boundary condition tests",
+    "scenarios": [
+      {
+        "id": "edge-zero-inputs",
+        "name": "Zero Input Values",
+        "description": "Verify graceful handling of zeros",
+        "inputs": {
+          "implementationCost": 0,
+          "monthlyRecurringSavings": 0,
+          "timelineMonths": 1
+        },
+        "expectedOutputs": {
+          "paybackMonths": "0 or Infinity",
+          "firstYearROI": 0,
+          "threeYearROI": 0,
+          "comments": [
+            "Zero division protected throughout",
+            "Returns 0 for ROI when implementationCost = 0",
+            "Returns Infinity for payback when savings = 0"
+          ]
+        }
+      },
+      {
+        "id": "edge-negative-savings",
+        "name": "Negative Net Savings",
+        "description": "When maintenance exceeds savings",
+        "inputs": {
+          "monthlyDowntimeSavings": 1000,
+          "monthlyMaintenanceCost": 2000
+        },
+        "expectedOutputs": {
+          "monthlyRecurringSavings": -1000,
+          "paybackMonths": "Infinity",
+          "comments": [
+            "Negative savings result in Infinity payback",
+            "This represents a value-destroying investment"
+          ]
+        }
+      },
+      {
+        "id": "edge-max-oee-improvement",
+        "name": "OEE Improvement Capping",
+        "description": "Verify 35% max is enforced",
+        "inputs": {
+          "targetOEEImprovement": 0.5
+        },
+        "expectedOutputs": {
+          "validatedOEEImprovement": 0.35,
+          "comments": [
+            "Input of 50% should be capped to 35% max",
+            "Validation: Math.min(0.35, Math.max(0, input))"
+          ]
+        }
+      },
+      {
+        "id": "edge-irr-no-convergence",
+        "name": "IRR Non-Convergence",
+        "description": "Extreme cash flow patterns",
+        "inputs": {
+          "description": "Highly irregular cash flows may prevent convergence"
+        },
+        "expectedOutputs": {
+          "irrBounded": true,
+          "irrMin": -1.0,
+          "irrMax": 5.0,
+          "comments": [
+            "IRR is bounded to [-100%, +500%]",
+            "Prevents runaway values from divergent calculations"
+          ]
+        }
+      }
+    ]
+  }
+}

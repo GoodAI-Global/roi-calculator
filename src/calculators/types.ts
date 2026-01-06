@@ -1,7 +1,20 @@
+/**
+ * ROI Calculator Type Definitions
+ *
+ * Core types, interfaces, and default values for the ROI calculator.
+ *
+ * @see {@link file://../MODEL.md#variable-reference} for complete variable documentation
+ * @see {@link file://../__fixtures__/roi_scenarios.json} for test scenarios with expected values
+ *
+ * @module calculators/types
+ */
+
 export type Industry = 'manufacturing' | 'insurance' | 'healthcare' | 'aquaculture';
 
 /**
  * Financial configuration for enterprise calculations
+ *
+ * @see {@link file://../MODEL.md#financial-metrics} for formula documentation
  */
 export interface FinancialConfig {
   discountRate: number; // Annual discount rate for NPV (e.g., 0.10 for 10%)

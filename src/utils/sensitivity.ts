@@ -1,6 +1,23 @@
 import { SensitivityAnalysis } from '../calculators/types';
 
 /**
+ * Sensitivity Analysis Utilities
+ *
+ * Calculates conservative, expected, and optimistic scenarios
+ * using multipliers on expected monthly savings.
+ *
+ * @see {@link file://../MODEL.md#sensitivity-analysis} for complete documentation
+ * @see {@link file://../__fixtures__/roi_scenarios.json} for test scenarios
+ *
+ * ## Scenario Factors
+ * - Conservative: 60% of expected benefits
+ * - Expected: 100% (baseline)
+ * - Optimistic: 140% of expected benefits
+ *
+ * @module utils/sensitivity
+ */
+
+/**
  * Calculate sensitivity analysis scenarios
  *
  * @param implementationCost - Total implementation cost

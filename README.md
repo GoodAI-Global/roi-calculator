@@ -11,10 +11,11 @@
 
 - A **client-side React application** for calculating AI implementation ROI
 - **Manufacturing & Insurance calculators** with industry-specific metrics
-- **Transparent calculations** — all assumptions visible and editable
+- **Transparent calculations** — all assumptions visible and editable ([see MODEL.md](MODEL.md))
 - **Conservative estimates** — uses p50 (median) benchmarks, not optimistic outliers
 - **Sensitivity analysis** — shows conservative, expected, and optimistic scenarios
 - **Enterprise financial metrics** — NPV, IRR, TCO, profitability index
+- **Testable model** — deterministic calculations with [documented fixtures](src/__fixtures__/roi_scenarios.json)
 
 ## What This Is NOT
 
@@ -69,6 +70,8 @@ npm run typecheck    # TypeScript check
 
 ## Calculation Methodology
 
+> **Full documentation**: See [MODEL.md](MODEL.md) for complete formulas, variables, ranges, and sources.
+
 ### Manufacturing ROI
 - **Downtime Reduction**: OEE improvement correlates with downtime reduction at 2.5x factor
 - **Savings**: `Downtime Hours × Reduction % × Cost per Hour - Maintenance Costs`
@@ -79,7 +82,7 @@ npm run typecheck    # TypeScript check
 - **Fraud Detection**: 2x improvement in detection rate, capped at 60%
 
 ### Financial Metrics
-- **NPV**: Net Present Value at 10% discount rate over 3 years
+- **NPV**: Net Present Value at 10% discount rate over 5 years
 - **IRR**: Internal Rate of Return using Newton-Raphson method
 - **TCO**: Total Cost of Ownership with 3% inflation adjustment
 
